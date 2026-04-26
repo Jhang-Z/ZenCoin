@@ -28,13 +28,12 @@ struct EntrySheet: View {
                     set: { viewModel?.category = $0 }
                 )
             )
-            .padding(.top, 24)
+            .padding(.top, 28)
 
             noteField
                 .padding(.horizontal, 24)
-                .padding(.top, 12)
-
-            Spacer(minLength: 8)
+                .padding(.top, 14)
+                .padding(.bottom, 14)
 
             AmountKeypadView(
                 onToken: { viewModel?.appendToken($0) },
@@ -43,7 +42,13 @@ struct EntrySheet: View {
                 canSave: viewModel?.canSave ?? false
             )
         }
+        .dismissKeyboardOnBackgroundTap()
         .background(theme.bgPrimary.ignoresSafeArea())
+        // 让 sheet 高度跟着分类多寡走 —— 支出 12 类 vs 收入 4 类差 ~150pt，
+        // 同一个 fraction 会在收入模式撑出 200pt 无意义呼吸区。
+        .presentationDetents([
+            viewModel?.isIncome == true ? .fraction(0.70) : .fraction(0.85)
+        ])
         .onAppear {
             if viewModel == nil {
                 viewModel = EntryViewModel(
@@ -130,13 +135,6 @@ struct EntrySheet: View {
             .focused($noteFocused)
             .submitLabel(.done)
             .onSubmit { noteFocused = false }
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("完成") { noteFocused = false }
-                        .foregroundStyle(theme.accent)
-                }
-            }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)

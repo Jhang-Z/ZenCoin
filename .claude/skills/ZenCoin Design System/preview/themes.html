@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>ZenCoin · Theme Palettes</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin: 0; padding: 0; background: #fff; }
+  body { padding: 0; }
+  .theme { display: grid; grid-template-columns: 84px 1fr; align-items: stretch; }
+  .theme + .theme { border-top: 1px solid #e8e8e8; }
+  .name { padding: 14px 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+  .swatches { display: grid; grid-template-columns: repeat(8, 1fr); }
+  .sw { height: 64px; display: flex; flex-direction: column; justify-content: flex-end; padding: 6px 8px; font-size: 9.5px; font-feature-settings: "tnum"; font-family: ui-monospace, Menlo, monospace; }
+  .claude .name   { background: #F5F4ED; color: #141413; font-family: "New York", Georgia, serif; }
+  .cursor .name   { background: #F2F1ED; color: #26251E; }
+  .zapier .name   { background: #FFFEFB; color: #201515; border-left: 3px solid #FF4F00; }
+  .eleven .name   { background: #0A0A0A; color: #F5F5F5; }
+</style>
+</head><body>
+  <div class="theme claude"><div class="name">Claude</div><div class="swatches">
+    <div class="sw" style="background:#F5F4ED;color:#141413">bg</div>
+    <div class="sw" style="background:#FAF9F5;color:#141413">surf</div>
+    <div class="sw" style="background:#E8E6DC;color:#141413">input</div>
+    <div class="sw" style="background:#141413;color:#F5F4ED">text</div>
+    <div class="sw" style="background:#5E5D59;color:#F5F4ED">text2</div>
+    <div class="sw" style="background:#C96442;color:#F5F4ED">accent</div>
+    <div class="sw" style="background:#F0EEE6;color:#141413">sep</div>
+    <div class="sw" style="background:#B53333;color:#F5F4ED">error</div>
+  </div></div>
+  <div class="theme cursor"><div class="name">Cursor</div><div class="swatches">
+    <div class="sw" style="background:#F2F1ED;color:#26251E">bg</div>
+    <div class="sw" style="background:#E6E5E0;color:#26251E">surf</div>
+    <div class="sw" style="background:#EBEAE5;color:#26251E">input</div>
+    <div class="sw" style="background:#26251E;color:#F2F1ED">text</div>
+    <div class="sw" style="background:#807F75;color:#F2F1ED">text2</div>
+    <div class="sw" style="background:#F54E00;color:#fff">accent</div>
+    <div class="sw" style="background:#DAD8D2;color:#26251E">sep</div>
+    <div class="sw" style="background:#CF2D56;color:#fff">error</div>
+  </div></div>
+  <div class="theme zapier"><div class="name">Zapier</div><div class="swatches">
+    <div class="sw" style="background:#FFFEFB;color:#201515">bg</div>
+    <div class="sw" style="background:#FFFDF9;color:#201515">surf</div>
+    <div class="sw" style="background:#ECEAE3;color:#201515">input</div>
+    <div class="sw" style="background:#201515;color:#FFFEFB">text</div>
+    <div class="sw" style="background:#36342E;color:#FFFEFB">text2</div>
+    <div class="sw" style="background:#FF4F00;color:#fff">accent</div>
+    <div class="sw" style="background:#C5C0B1;color:#201515">sep</div>
+    <div class="sw" style="background:#CF2D56;color:#fff">error</div>
+  </div></div>
+  <div class="theme eleven"><div class="name">ElevenLabs</div><div class="swatches">
+    <div class="sw" style="background:#0A0A0A;color:#F5F5F5">bg</div>
+    <div class="sw" style="background:#161616;color:#F5F5F5">surf</div>
+    <div class="sw" style="background:#1F1F1F;color:#F5F5F5">input</div>
+    <div class="sw" style="background:#F5F5F5;color:#0A0A0A">text</div>
+    <div class="sw" style="background:#A0A0A0;color:#0A0A0A">text2</div>
+    <div class="sw" style="background:#10D9A0;color:#0A0A0A">accent</div>
+    <div class="sw" style="background:#2A2A2A;color:#F5F5F5">sep</div>
+    <div class="sw" style="background:#F87171;color:#0A0A0A">error</div>
+  </div></div>
+</body></html>

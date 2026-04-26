@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>ZenCoin · Radii</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .col { text-align: center; }
+  .row { display: flex; flex-direction: column; gap: 10px; }
+  .label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-primary); margin-bottom: 6px; }
+  .shape { height: 50px; background: var(--accent); }
+  .meta { font-size: 10px; color: var(--text-secondary); margin-top: 2px; font-feature-settings: "tnum"; }
+</style>
+</head><body data-theme="claude">
+  <div class="grid">
+    <div class="col"><div class="label">Claude</div>
+      <div class="shape" style="border-radius:8px"></div><div class="meta">SM 8</div>
+      <div class="shape" style="border-radius:12px;margin-top:8px"></div><div class="meta">MD 12</div>
+      <div class="shape" style="border-radius:24px;margin-top:8px"></div><div class="meta">LG 24</div>
+    </div>
+    <div class="col"><div class="label">Cursor</div>
+      <div class="shape" style="border-radius:8px;background:#F54E00"></div><div class="meta">SM 8</div>
+      <div class="shape" style="border-radius:8px;background:#F54E00;margin-top:8px"></div><div class="meta">MD 8</div>
+      <div class="shape" style="border-radius:999px;background:#F54E00;margin-top:8px"></div><div class="meta">LG pill</div>
+    </div>
+    <div class="col"><div class="label">Zapier</div>
+      <div class="shape" style="border-radius:4px;background:#FF4F00"></div><div class="meta">SM 4</div>
+      <div class="shape" style="border-radius:8px;background:#FF4F00;margin-top:8px"></div><div class="meta">MD 8</div>
+      <div class="shape" style="border-radius:20px;background:#FF4F00;margin-top:8px"></div><div class="meta">LG 20</div>
+    </div>
+    <div class="col"><div class="label">ElevenLabs</div>
+      <div class="shape" style="border-radius:8px;background:#10D9A0"></div><div class="meta">SM 8</div>
+      <div class="shape" style="border-radius:12px;background:#10D9A0;margin-top:8px"></div><div class="meta">MD 12</div>
+      <div class="shape" style="border-radius:20px;background:#10D9A0;margin-top:8px"></div><div class="meta">LG 20</div>
+    </div>
+  </div>
+</body></html>

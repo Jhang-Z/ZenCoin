@@ -18,6 +18,13 @@ struct AmountKeypadView: View {
         [".", "0", "⌫", "+"],
     ]
 
+    /// 单格高度（与 keyButton 的 minHeight 同步）。
+    private static let keyHeight: CGFloat = 56
+    /// 整个键盘的固定高度 = 4 行 × 56 + 3 个 1pt 分隔 + 8pt 底 padding。
+    /// 显式锁高度，避免 saveButton 的 `.frame(maxHeight: .infinity)` 在外层
+    /// VStack 里跟 Spacer 抢 flex space（症状：键盘上方出现一片灰色空白）。
+    private static let totalHeight: CGFloat = keyHeight * 4 + 3 + 8
+
     var body: some View {
         HStack(spacing: 1) {
             VStack(spacing: 1) {
@@ -32,6 +39,7 @@ struct AmountKeypadView: View {
             saveButton
         }
         .padding(.bottom, 8)
+        .frame(height: Self.totalHeight)
         .background(theme.separator)
     }
 

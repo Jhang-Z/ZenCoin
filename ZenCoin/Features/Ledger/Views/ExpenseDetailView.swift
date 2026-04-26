@@ -61,12 +61,8 @@ struct ExpenseDetailView: View {
                 }
                 .accessibilityLabel("删除记录")
             }
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("完成") { noteFocused = false }
-                    .foregroundStyle(theme.accent)
-            }
         }
+        .dismissKeyboardOnBackgroundTap()
         .sheet(isPresented: $showCategorySheet) { categorySheet }
         .sheet(isPresented: $showDateSheet) { dateSheet }
         .sheet(isPresented: $showAmountSheet) { amountSheet }

@@ -40,7 +40,8 @@ extension ThemeTokens {
         error:         Color(hex: "CF2D56"),
         radiusSmall: 8, radiusMedium: 8, radiusLarge: 999,
         fontDesign: .default,
-        displayTracking: -1.5,
+        // skill spec: -0.0375em → 在 44pt display 上 ≈ -1.65pt
+        displayTracking: -1.65,
         isDark: false
     )
 
@@ -57,7 +58,8 @@ extension ThemeTokens {
         error:         Color(hex: "F87171"),
         radiusSmall: 8, radiusMedium: 12, radiusLarge: 20,
         fontDesign: .default,
-        displayTracking: -0.5,
+        // skill spec: -0.0125em → 在 44pt display 上 ≈ -0.55pt
+        displayTracking: -0.55,
         isDark: true
     )
 

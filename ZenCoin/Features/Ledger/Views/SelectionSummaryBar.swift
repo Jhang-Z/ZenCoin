@@ -60,18 +60,20 @@ struct SelectionSummaryBar: View {
     private var amountLine: some View {
         if totalExpense == 0 && totalIncome == 0 {
             Text("—")
-                .font(theme.type.heading)
+                .font(theme.type.headingNumeric)
                 .foregroundStyle(theme.textPrimary)
         } else {
             HStack(spacing: 14) {
                 if totalExpense > 0 {
                     Text("- " + CurrencyFormatter.format(totalExpense))
-                        .font(theme.type.heading)
+                        .font(theme.type.headingNumeric)
+                        .monospacedDigit()
                         .foregroundStyle(theme.textPrimary)
                 }
                 if totalIncome > 0 {
                     Text("+ " + CurrencyFormatter.format(totalIncome))
-                        .font(theme.type.heading)
+                        .font(theme.type.headingNumeric)
+                        .monospacedDigit()
                         .foregroundStyle(theme.accent)
                 }
             }

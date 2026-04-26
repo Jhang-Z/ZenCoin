@@ -1,0 +1,268 @@
+/* ============================================================
+   ZenCoin · Design Tokens
+   Source of truth: ZenCoin/Core/Theme/ThemePresets.swift
+   Four theme presets: Claude (default), Cursor, Zapier, ElevenLabs.
+   Structure is identical — only token values change.
+   ============================================================ */
+
+/* ---------- Theme: Claude (default · parchment + terracotta + serif) ---------- */
+:root,
+[data-theme="claude"] {
+  /* Surfaces */
+  --bg-primary: #F5F4ED;       /* parchment */
+  --bg-surface: #FAF9F5;
+  --bg-input:   #E8E6DC;
+
+  /* Text */
+  --text-primary:   #141413;
+  --text-secondary: #5E5D59;
+
+  /* Brand / state */
+  --accent:       #C96442;     /* terracotta */
+  --accent-muted: rgba(201, 100, 66, 0.15);
+  --separator:    #F0EEE6;
+  --error:        #B53333;
+
+  /* Shape */
+  --radius-small:  8px;
+  --radius-medium: 12px;
+  --radius-large:  24px;
+
+  /* Type */
+  --font-design: "New York", "Iowan Old Style", "Charter", Georgia, serif;
+  --display-tracking: 0;
+
+  --is-dark: 0;
+}
+
+/* ---------- Theme: Cursor (warm cream + orange + compressed sans) ---------- */
+[data-theme="cursor"] {
+  --bg-primary: #F2F1ED;
+  --bg-surface: #E6E5E0;
+  --bg-input:   #EBEAE5;
+
+  --text-primary:   #26251E;
+  --text-secondary: rgba(38, 37, 30, 0.55);
+
+  --accent:       #F54E00;
+  --accent-muted: rgba(245, 78, 0, 0.12);
+  --separator:    rgba(38, 37, 30, 0.10);
+  --error:        #CF2D56;
+
+  --radius-small:  8px;
+  --radius-medium: 8px;
+  --radius-large:  999px;       /* pill */
+
+  --font-design: "SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+  --display-tracking: -0.0375em;
+
+  --is-dark: 0;
+}
+
+/* ---------- Theme: Zapier (cream + vivid orange + border-forward) ---------- */
+[data-theme="zapier"] {
+  --bg-primary: #FFFEFB;
+  --bg-surface: #FFFDF9;
+  --bg-input:   #ECEAE3;
+
+  --text-primary:   #201515;
+  --text-secondary: #36342E;
+
+  --accent:       #FF4F00;
+  --accent-muted: rgba(255, 79, 0, 0.10);
+  --separator:    #C5C0B1;
+  --error:        #CF2D56;
+
+  --radius-small:  4px;
+  --radius-medium: 8px;
+  --radius-large:  20px;
+
+  --font-design: "SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+  --display-tracking: 0;
+
+  --is-dark: 0;
+}
+
+/* ---------- Theme: ElevenLabs (cinematic dark + mint accent) ---------- */
+[data-theme="elevenlabs"] {
+  --bg-primary: #0A0A0A;
+  --bg-surface: #161616;
+  --bg-input:   #1F1F1F;
+
+  --text-primary:   #F5F5F5;
+  --text-secondary: #A0A0A0;
+
+  --accent:       #10D9A0;     /* mint */
+  --accent-muted: rgba(16, 217, 160, 0.18);
+  --separator:    #2A2A2A;
+  --error:        #F87171;
+
+  --radius-small:  8px;
+  --radius-medium: 12px;
+  --radius-large:  20px;
+
+  --font-design: "SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+  --display-tracking: -0.0125em;
+
+  --is-dark: 1;
+}
+
+/* ============================================================
+   Type ramp — mirrors ZenCoin/Core/Theme/Typography.swift
+   Sizes are fixed across themes; only family + tracking shifts.
+   ============================================================ */
+:root {
+  --type-display-size:  44px;  /* hero numbers, page titles */
+  --type-display-weight: 500;
+
+  --type-title-size:    22px;  /* section title (e.g. month label) */
+  --type-title-weight:  500;
+
+  --type-heading-size:  17px;  /* card / row titles — CJK-text-heavy */
+  --type-heading-weight: 500;
+  --type-heading-numeric-size: 17px;  /* amount numerals — Latin-numeric */
+  --type-heading-numeric-weight: 500;
+
+  --type-body-size:     15px;  /* body, button labels */
+  --type-body-weight:   400;
+
+  --type-caption-size:  13px;
+  --type-caption-weight: 400;
+
+  --type-micro-size:    11px;  /* IN / OUT / LEDGER (caps labels) */
+  --type-micro-weight:  500;
+  --type-micro-tracking: 0.06em; /* min 0.6 */
+
+  /* Spacing grid (24 / 16 / 12-14 / 8) */
+  --space-edge:   24px;   /* screen horizontal margin */
+  --space-card:   16px;   /* card inner padding */
+  --space-inline: 12px;
+  --space-tight:  8px;
+  --space-section: 32px;
+}
+
+/* ============================================================
+   Semantic classes for HTML mocks
+   ============================================================ */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-design);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  -webkit-font-smoothing: antialiased;
+}
+
+.zc-display {
+  font-family: var(--font-design);
+  font-size: var(--type-display-size);
+  font-weight: var(--type-display-weight);
+  letter-spacing: var(--display-tracking);
+  line-height: 1.1;
+}
+
+.zc-title {
+  font-family: var(--font-design);
+  font-size: var(--type-title-size);
+  font-weight: var(--type-title-weight);
+  letter-spacing: calc(var(--display-tracking) * 0.4);
+  line-height: 1.2;
+}
+
+.zc-heading {
+  font-family: var(--font-design);
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  line-height: 1.3;
+}
+
+/* 数字 / 金额专用：iOS 端走 system serif (New York) 而非宋体 —— 跟 display hero
+   保持同一种衬线字风。详见 README「iOS-specific gotcha」。
+   Web mock 里 font-family 同样回到 var(--font-design)，行为跟 zc-heading 一致；
+   class 名分开是为了让模板里的语义清楚（金额用 zc-heading-numeric，文字用 zc-heading）。 */
+.zc-heading-numeric {
+  font-family: var(--font-design);
+  font-size: var(--type-heading-numeric-size);
+  font-weight: var(--type-heading-numeric-weight);
+  font-feature-settings: "tnum"; /* tabular figures，金额对齐用 */
+  line-height: 1.3;
+}
+
+.zc-body {
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: 1.45;
+}
+
+.zc-caption {
+  font-size: var(--type-caption-size);
+  font-weight: var(--type-caption-weight);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.zc-micro {
+  font-size: var(--type-micro-size);
+  font-weight: var(--type-micro-weight);
+  letter-spacing: var(--type-micro-tracking);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Components */
+.zc-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-medium);
+  padding: var(--space-card);
+  /* No border, no shadow — by design. */
+}
+
+.zc-separator {
+  height: 1px;
+  background: var(--separator);
+  border: 0;
+}
+
+.zc-btn-primary {
+  background: var(--accent);
+  color: var(--bg-primary);
+  font: 600 var(--type-body-size)/1 var(--font-design);
+  border: 0;
+  border-radius: var(--radius-small);
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: opacity 0.22s ease-in-out;
+}
+.zc-btn-primary:hover { opacity: 0.92; }
+.zc-btn-primary:active { opacity: 0.84; }
+
+.zc-btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: 500 var(--type-body-size)/1 var(--font-design);
+  border: 0;
+  border-radius: var(--radius-small);
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: opacity 0.22s ease-in-out;
+}
+
+.zc-btn-tertiary {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font: 500 var(--type-body-size)/1 var(--font-design);
+  border: 0;
+  border-radius: var(--radius-small);
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.zc-btn-destructive {
+  background: transparent;
+  color: var(--error);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-small);
+  padding: 10px 16px;
+  font: 500 var(--type-body-size)/1 var(--font-design);
+  cursor: pointer;
+}

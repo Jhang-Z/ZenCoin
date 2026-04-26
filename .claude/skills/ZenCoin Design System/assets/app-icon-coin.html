@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh"><head>
+<meta charset="utf-8"/>
+<title>ZenCoin · App Icon · 方孔钱</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background:#ECEAE3; font-family:var(--font-design); }
+  .page { max-width:880px; margin:0 auto; padding:36px 28px 80px; }
+
+  h1 { font-size:28px; font-weight:500; color:#141413; margin:0 0 6px; letter-spacing:-0.01em; }
+  .lede { font-size:13px; color:#5E5D59; margin:0 0 32px; line-height:1.55; max-width:580px; }
+  .section-label { font-size:10.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;
+    color:#80807a; margin:36px 0 14px; }
+  .panel { border-radius:16px; padding:36px; }
+
+  /* Hero */
+  .hero { display:grid; grid-template-columns:1fr 1fr; gap:0; background:#F5F4ED; border-radius:24px; overflow:hidden; }
+  .hero .left, .hero .right { padding:56px 48px; }
+  .hero .left { display:flex; align-items:center; justify-content:center; }
+  .hero .icon-xl { width:240px; height:240px; border-radius:54px; overflow:hidden; }
+  .hero .icon-xl svg { width:100%; height:100%; display:block; }
+  .hero .right { display:flex; flex-direction:column; justify-content:center; gap:14px; border-left:1px solid #E8E6DC; }
+  .hero h2 { font-size:32px; font-weight:500; margin:0; color:#141413; letter-spacing:-0.01em; }
+  .hero p { margin:0; font-size:13.5px; color:#5E5D59; line-height:1.6; }
+  .hero .meta-row { display:flex; gap:18px; font-size:11px; color:#80807a; padding-top:8px; border-top:1px solid #E8E6DC; margin-top:8px; }
+  .hero .meta-row b { color:#141413; font-weight:500; display:block; margin-bottom:2px;
+    letter-spacing:0.08em; text-transform:uppercase; font-size:9.5px; }
+
+  /* Sizes */
+  .sizes { display:flex; flex-wrap:wrap; gap:28px; align-items:flex-end; padding:32px 0; }
+  .size-cell { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .size-cell .icon { border-radius:var(--r); overflow:hidden; }
+  .size-cell .icon svg { width:100%; height:100%; display:block; }
+  .size-cell .meta { font-size:10px; color:#80807a; font-feature-settings:"tnum"; text-align:center; line-height:1.3; }
+  .size-cell .meta b { display:block; color:#141413; font-weight:500; }
+
+  /* Theme grid */
+  .themes { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .theme-card { padding:28px; border-radius:16px; display:flex; align-items:center; gap:22px; }
+  .theme-card .icon { width:96px; height:96px; border-radius:22px; overflow:hidden; flex:none; }
+  .theme-card .icon svg { width:100%; height:100%; display:block; }
+  .theme-card .word { font-size:32px; font-weight:500; line-height:1; }
+  .theme-card .label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; margin-top:6px; }
+
+  .t-claude { background:#F5F4ED; }
+  .t-claude .word { font-family:"New York","Iowan Old Style","Charter",Georgia,serif; color:#141413; }
+  .t-claude .label { color:#5E5D59; }
+
+  .t-cursor { background:#F2F1ED; }
+  .t-cursor .word { font-family:"SF Pro Display",-apple-system,system-ui,sans-serif; color:#26251E; letter-spacing:-0.02em; }
+  .t-cursor .label { color:#26251E99; }
+
+  .t-zapier { background:#FFFEFB; }
+  .t-zapier .word { font-family:"SF Pro Display",-apple-system,system-ui,sans-serif; color:#201515; }
+  .t-zapier .label { color:#36342E; }
+
+  .t-eleven { background:#0A0A0A; }
+  .t-eleven .word { font-family:"SF Pro Display","SF Pro",-apple-system,system-ui,sans-serif; color:#F5F5F5; letter-spacing:-0.0125em; }
+  .t-eleven .label { color:#A0A0A0; }
+
+  /* Home screen */
+  .home { width:100%; max-width:360px; margin:0 auto;
+    background-image:linear-gradient(180deg,#3a4248 0%,#1d2226 60%,#14181b 100%);
+    border-radius:36px; padding:32px 22px 28px; }
+  .home-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px 14px; }
+  .home .app { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .home .app-icon { width:60px; height:60px; border-radius:14px; overflow:hidden; }
+  .home .app-icon svg { width:100%; height:100%; display:block; }
+  .home .app-name { font-size:10px; color:rgba(255,255,255,0.92); font-family:-apple-system,system-ui; }
+  .filler1 { background:linear-gradient(180deg,#34c759,#30b350); }
+  .filler2 { background:#fff; }
+  .filler3 { background:linear-gradient(180deg,#5e5ce6,#4a48c4); }
+  .filler4 { background:linear-gradient(180deg,#ff453a,#e23932); }
+  .filler5 { background:#000; border:1px solid #222; }
+  .filler6 { background:linear-gradient(180deg,#5ac8fa,#0a84ff); }
+  .filler7 { background:#FAF9F5; }
+
+  /* Don't / Do */
+  .doDont { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .dd { display:flex; flex-direction:column; gap:10px; align-items:center; }
+  .dd .icon { width:96px; height:96px; border-radius:22px; overflow:hidden; }
+  .dd .icon svg { width:100%; height:100%; display:block; }
+  .dd .verdict { font-size:10px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;
+    padding:3px 10px; border-radius:999px; }
+  .dd.no .verdict { background:rgba(181,51,51,0.12); color:#B53333; }
+  .dd.yes .verdict { background:rgba(201,100,66,0.15); color:#C96442; }
+  .dd .why { font-size:11.5px; color:#5E5D59; text-align:center; max-width:180px; line-height:1.45; }
+</style>
+</head><body>
+
+<div class="page">
+
+<h1>ZenCoin · App Icon</h1>
+<div class="lede">
+  Direction <b>方孔钱 / Square-hole coin</b>. 取自中国古钱币的「外圆内方」造型 —
+  圆形外廓 + 居中方形孔。强符号、单色块、单形状，是 enso 之外最贴合「coin」语义的方案。
+  四套主题各换一次 token —— 结构不动。
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="left">
+    <div class="icon-xl">
+      <svg viewBox="0 0 1024 1024">
+        <rect width="1024" height="1024" fill="#F5F4ED"/>
+        <mask id="hole-h"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask>
+        <circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#hole-h)"/>
+      </svg>
+    </div>
+  </div>
+  <div class="right">
+    <h2>外圆内方.</h2>
+    <p>古钱币的几何概括：圆形是流通，方形是定见。两个最朴素的图形叠在一起，没有第三个元素争抢注意。
+      40px 通知图标也认得出，因为「圆里有方」这件事本身就极简。</p>
+    <div class="meta-row">
+      <div><b>形</b>圆形外廓 + 方形孔</div>
+      <div><b>背景</b>羊皮纸 #F5F4ED</div>
+      <div><b>填色</b>赤陶 #C96442</div>
+      <div><b>比例</b>外径 75% · 孔 25%</div>
+    </div>
+  </div>
+</div>
+
+<!-- iOS sizes -->
+<div class="section-label">iOS 尺寸 — App Store 到 Notification</div>
+<div class="sizes">
+  <div class="size-cell"><div class="icon" style="--r:36px;width:180px;height:180px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="m1"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#m1)"/></svg></div><div class="meta"><b>1024</b>App Store</div></div>
+  <div class="size-cell"><div class="icon" style="--r:27px;width:120px;height:120px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="m2"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#m2)"/></svg></div><div class="meta"><b>180</b>iPhone @3x</div></div>
+  <div class="size-cell"><div class="icon" style="--r:18px;width:80px;height:80px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="m3"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#m3)"/></svg></div><div class="meta"><b>120</b>iPhone @2x</div></div>
+  <div class="size-cell"><div class="icon" style="--r:13px;width:60px;height:60px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="m4"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#m4)"/></svg></div><div class="meta"><b>87</b>Settings @3x</div></div>
+  <div class="size-cell"><div class="icon" style="--r:10px;width:44px;height:44px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="m5"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#m5)"/></svg></div><div class="meta"><b>60</b>Spotlight</div></div>
+  <div class="size-cell"><div class="icon" style="--r:8px;width:38px;height:38px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="m6"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#m6)"/></svg></div><div class="meta"><b>40</b>Notification</div></div>
+</div>
+
+<!-- 4 themes -->
+<div class="section-label">四套主题</div>
+<div class="themes">
+  <div class="theme-card t-claude">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="tc1"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#tc1)"/></svg></div>
+    <div><div class="word">ZenCoin</div><div class="label">Claude · 默认</div></div>
+  </div>
+  <div class="theme-card t-cursor">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F2F1ED"/><mask id="tc2"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#F54E00" mask="url(#tc2)"/></svg></div>
+    <div><div class="word">ZenCoin</div><div class="label">Cursor</div></div>
+  </div>
+  <div class="theme-card t-zapier">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#FFFEFB"/><mask id="tc3"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#FF4F00" mask="url(#tc3)"/></svg></div>
+    <div><div class="word">ZenCoin</div><div class="label">Zapier</div></div>
+  </div>
+  <div class="theme-card t-eleven">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#0A0A0A"/><mask id="tc4"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#10D9A0" mask="url(#tc4)"/></svg></div>
+    <div><div class="word">ZenCoin</div><div class="label">ElevenLabs · 暗色</div></div>
+  </div>
+</div>
+
+<!-- Home screen -->
+<div class="section-label">主屏混排</div>
+<div class="home">
+  <div class="home-grid">
+    <div class="app"><div class="app-icon filler3"></div><div class="app-name">Calendar</div></div>
+    <div class="app"><div class="app-icon filler1"></div><div class="app-name">Messages</div></div>
+    <div class="app"><div class="app-icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="hm1"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#hm1)"/></svg></div><div class="app-name">ZenCoin</div></div>
+    <div class="app"><div class="app-icon filler4"></div><div class="app-name">Photos</div></div>
+    <div class="app"><div class="app-icon filler2"></div><div class="app-name">Notes</div></div>
+    <div class="app"><div class="app-icon filler5"></div><div class="app-name">Wallet</div></div>
+    <div class="app"><div class="app-icon filler6"></div><div class="app-name">Music</div></div>
+    <div class="app"><div class="app-icon filler7"></div><div class="app-name">Mail</div></div>
+  </div>
+</div>
+<div style="font-size:11px;color:#80807a;margin-top:10px;text-align:center">
+  在一片彩色 / 渐变 / 高饱和图标里，<b style="color:#141413">单色 + 极简几何</b>反而最先被识别出来。
+</div>
+
+<!-- Don't / Do -->
+<div class="section-label">反模式</div>
+<div class="doDont">
+  <div class="dd no">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="bd1"><rect width="1024" height="1024" fill="white"/><circle cx="512" cy="512" r="120" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#bd1)"/></svg></div>
+    <div class="verdict">Don't</div>
+    <div class="why">圆孔。沦为加载图标 / donut chart，丢掉古钱币的辨识度。</div>
+  </div>
+  <div class="dd no">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="bd2"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#bd2)"/><text x="512" y="540" text-anchor="middle" font-size="180" fill="#C96442" font-family="serif">¥</text></svg></div>
+    <div class="verdict">Don't</div>
+    <div class="why">叠加货币符号。两个焦点，违反「一屏一主角」。</div>
+  </div>
+  <div class="dd yes">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><mask id="bd3"><rect width="1024" height="1024" fill="white"/><rect x="384" y="384" width="256" height="256" fill="black"/></mask><circle cx="512" cy="512" r="384" fill="#C96442" mask="url(#bd3)"/></svg></div>
+    <div class="verdict">Do</div>
+    <div class="why">实心赤陶圆 + 居中方孔。一形一色，过目难忘。</div>
+  </div>
+</div>
+
+</div>
+</body></html>

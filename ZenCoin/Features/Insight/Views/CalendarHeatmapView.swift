@@ -30,12 +30,11 @@ struct CalendarHeatmapView: View {
     private func monthGrid(days: [Date?], totals: [Date: Double]) -> some View {
         let max = totals.values.max() ?? 0
         return VStack(spacing: 6) {
-            // 周首字母行
+            // 周首字母行 — 中文字符不加 letter-spacing（DESIGN.md §3 规则）
             HStack(spacing: 0) {
                 ForEach(["一", "二", "三", "四", "五", "六", "日"], id: \.self) { d in
                     Text(d)
                         .font(theme.type.micro)
-                        .tracking(0.4)
                         .foregroundStyle(theme.textSecondary)
                         .frame(maxWidth: .infinity)
                 }
@@ -54,7 +53,7 @@ struct CalendarHeatmapView: View {
         let day = date.map { Calendar.current.component(.day, from: $0) }
         let intensity: Double = (maxTotal > 0 && total > 0) ? (0.18 + (total / maxTotal) * 0.72) : 0
         return ZStack {
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: theme.radiusSmall)
                 .fill(intensity > 0 ? theme.accent.opacity(intensity) : theme.bgInput.opacity(0.4))
             VStack(spacing: 1) {
                 if let day {

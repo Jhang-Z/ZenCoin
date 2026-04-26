@@ -49,7 +49,7 @@ struct EntryRowView: View {
                 signed: true,
                 isIncome: entry.isIncome
             ))
-            .font(theme.type.heading)
+            .font(theme.type.headingNumeric)
             .monospacedDigit()
             .foregroundStyle(entry.isIncome ? theme.accent : theme.textPrimary)
         }

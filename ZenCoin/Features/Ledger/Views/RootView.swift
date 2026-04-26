@@ -34,19 +34,23 @@ struct RootView: View {
             if selection.isActive {
                 selectionBar
                     .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
             } else {
                 BottomBar(
                     selected: $selectedTab,
                     onAdd: { showingEntry = true }
                 )
                 .transition(.opacity)
+                // 键盘弹起时锁定 tab bar 在屏幕底部，不跟随上浮
+                // （关键：必须在外部调用点应用，内部 modifier 抵不过父级 ZStack 重排）
+                .ignoresSafeArea(.keyboard, edges: .bottom)
             }
         }
         .animation(.easeInOut(duration: 0.22), value: selection.isActive)
         .sheet(isPresented: $showingEntry) {
+            // detents 由 EntrySheet 内部按模式（支出 / 收入）反应式决定
             EntrySheet()
                 .environment(\.modelContext, modelContext)
-                .presentationDetents([.fraction(0.85)])
                 .presentationDragIndicator(.hidden)
                 .presentationBackground(theme.bgPrimary)
         }

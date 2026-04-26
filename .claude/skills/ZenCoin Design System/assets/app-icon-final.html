@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>ZenCoin · Brand Lockup</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin: 0; padding: 0; background: #ECEAE3; font-family: var(--font-design); }
+  .page { max-width: 880px; margin: 0 auto; padding: 36px 28px 80px; }
+
+  h1 { font-size: 28px; font-weight: 500; color: #141413; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .lede { font-size: 13px; color: #5E5D59; margin: 0 0 32px; line-height: 1.55; max-width: 580px; }
+
+  .section-label { font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #80807a; margin: 36px 0 14px; }
+
+  .panel { background: #F5F4ED; border-radius: 16px; padding: 36px; }
+  .panel.dark { background: #0A0A0A; }
+  .panel.cream { background: #FFFEFB; }
+  .panel.cursor { background: #F2F1ED; }
+
+  /* ===== Hero icon ===== */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: #F5F4ED; border-radius: 24px; overflow: hidden; }
+  .hero .left, .hero .right { padding: 56px 48px; }
+  .hero .left { display: flex; align-items: center; justify-content: center; }
+  .hero .icon-xl { width: 240px; height: 240px; border-radius: 54px; overflow: hidden;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04), 0 12px 32px rgba(20,20,19,0.10); }
+  .hero .icon-xl svg { width: 100%; height: 100%; display: block; }
+  .hero .right { display: flex; flex-direction: column; justify-content: center; gap: 14px; border-left: 1px solid #E8E6DC; }
+  .hero h2 { font-size: 32px; font-weight: 500; margin: 0; color: #141413; letter-spacing: -0.01em; }
+  .hero p { margin: 0; font-size: 13.5px; color: #5E5D59; line-height: 1.6; }
+  .hero .meta-row { display: flex; gap: 18px; font-size: 11px; color: #80807a; padding-top: 8px; border-top: 1px solid #E8E6DC; margin-top: 8px; }
+  .hero .meta-row b { color: #141413; font-weight: 500; display: block; margin-bottom: 2px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 9.5px; }
+
+  /* ===== iOS sizes grid ===== */
+  .sizes { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-end; padding: 32px 0; }
+  .size-cell { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .size-cell .icon { border-radius: var(--r); overflow: hidden; box-shadow: 0 1px 1px rgba(0,0,0,0.04), 0 6px 14px rgba(20,20,19,0.08); }
+  .size-cell .icon svg { width: 100%; height: 100%; display: block; }
+  .size-cell .meta { font-size: 10px; color: #80807a; font-feature-settings: "tnum"; text-align: center; line-height: 1.3; }
+  .size-cell .meta b { display: block; color: #141413; font-weight: 500; }
+
+  /* ===== Wordmark ===== */
+  .lockup { display: flex; align-items: center; gap: 22px; }
+  .lockup .icon { width: 72px; height: 72px; border-radius: 16px; overflow: hidden; flex: none; }
+  .lockup .icon svg { width: 100%; height: 100%; display: block; }
+  .lockup .word { font-family: "New York", "Iowan Old Style", "Charter", Georgia, serif; font-size: 48px; font-weight: 500; letter-spacing: 0; color: #141413; line-height: 1; }
+  .lockup.lg .icon { width: 96px; height: 96px; border-radius: 22px; }
+  .lockup.lg .word { font-size: 64px; }
+  .lockup.sm .icon { width: 40px; height: 40px; border-radius: 9px; }
+  .lockup.sm .word { font-size: 28px; }
+  .lockup.dark .word { color: #F5F5F5; font-family: "SF Pro Display", "SF Pro", -apple-system, system-ui, sans-serif; letter-spacing: -0.0125em; }
+  .lockup.dark .icon { background: #0A0A0A; }
+  .lockup.cream .word { color: #201515; }
+  .lockup.cursor .word { color: #26251E; font-family: "SF Pro Display", -apple-system, system-ui, sans-serif; letter-spacing: -0.02em; }
+
+  /* ===== Construction grid ===== */
+  .construction { background: #FAF9F5; border-radius: 16px; padding: 32px; display: flex; align-items: center; justify-content: center; }
+  .construction svg { width: 100%; max-width: 420px; height: auto; }
+
+  /* ===== Don't / do ===== */
+  .doDont { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .dd { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .dd .icon { width: 96px; height: 96px; border-radius: 22px; overflow: hidden; }
+  .dd .icon svg { width: 100%; height: 100%; display: block; }
+  .dd .verdict { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; }
+  .dd.no .verdict { background: rgba(181,51,51,0.12); color: #B53333; }
+  .dd.yes .verdict { background: rgba(201,100,66,0.15); color: #C96442; }
+  .dd .why { font-size: 11.5px; color: #5E5D59; text-align: center; max-width: 180px; line-height: 1.45; }
+
+  /* ===== Home screen ===== */
+  .home { width: 100%; max-width: 360px; margin: 0 auto;
+    background-image: linear-gradient(180deg,#3a4248 0%,#1d2226 60%,#14181b 100%);
+    border-radius: 36px; padding: 32px 22px 28px; }
+  .home-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px 14px; }
+  .home .app { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .home .app-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; }
+  .home .app-icon svg { width: 100%; height: 100%; display: block; }
+  .home .app-name { font-size: 10px; color: rgba(255,255,255,0.92); font-family: -apple-system, system-ui; }
+  .filler1 { background: linear-gradient(180deg,#34c759,#30b350); }
+  .filler2 { background: #fff; }
+  .filler3 { background: linear-gradient(180deg,#5e5ce6,#4a48c4); }
+  .filler4 { background: linear-gradient(180deg,#ff453a,#e23932); }
+  .filler5 { background: #000; border: 1px solid #222; }
+  .filler6 { background: linear-gradient(180deg,#5ac8fa,#0a84ff); }
+  .filler7 { background: #FAF9F5; }
+
+  .files { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; font-size: 12px; color: #5E5D59; }
+  .files a { color: #C96442; text-decoration: none; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; }
+  .files a:hover { text-decoration: underline; }
+  .files .label { color: #141413; font-weight: 500; }
+
+  /* horizontal scrolling sizes */
+  .sizes::-webkit-scrollbar { display: none; }
+</style>
+</head><body>
+
+<div class="page">
+
+<h1>ZenCoin · App Icon</h1>
+<div class="lede">
+  Direction <b>B1 — Enso</b>. A single open brushstroke ring on parchment, in terracotta. The most zen and the most editorial of the eight directions. Wordmark uses the same Claude type system: <i>New York</i> serif, medium weight, no tracking.
+</div>
+
+<!-- ============ Hero ============ -->
+<div class="hero">
+  <div class="left">
+    <div class="icon-xl">
+      <svg viewBox="0 0 1024 1024">
+        <rect width="1024" height="1024" fill="#F5F4ED"/>
+        <path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+  <div class="right">
+    <h2>The open ring.</h2>
+    <p>A brushstroke that almost closes. The opening at the upper-right is the breath — what makes this <i>enso</i>, not a circle. It's <b>记账 by attention, not by counting</b>: the ring leaves room for what's not yet there.</p>
+    <div class="meta-row">
+      <div><b>Mark</b>Enso · open ring</div>
+      <div><b>Field</b>Parchment #F5F4ED</div>
+      <div><b>Stroke</b>Terracotta #C96442</div>
+      <div><b>Weight</b>56 / 1024</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Construction ============ -->
+<div class="section-label">Construction</div>
+<div class="construction">
+  <svg viewBox="0 0 1024 1024">
+    <rect width="1024" height="1024" fill="#F5F4ED"/>
+    <!-- safe area ring -->
+    <rect x="80" y="80" width="864" height="864" rx="180" fill="none" stroke="#C9644222" stroke-width="2" stroke-dasharray="6 6"/>
+    <!-- bbox of stroke -->
+    <circle cx="512" cy="512" r="256" fill="none" stroke="#14141322" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="512" cy="512" r="200" fill="none" stroke="#14141311" stroke-width="2" stroke-dasharray="6 6"/>
+    <!-- centerline cross -->
+    <line x1="80" y1="512" x2="944" y2="512" stroke="#14141318" stroke-width="2" stroke-dasharray="6 6"/>
+    <line x1="512" y1="80" x2="512" y2="944" stroke="#14141318" stroke-width="2" stroke-dasharray="6 6"/>
+    <!-- enso -->
+    <path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/>
+    <!-- annotations -->
+    <circle cx="740" cy="304" r="10" fill="#141413"/>
+    <circle cx="768" cy="712" r="10" fill="#141413"/>
+    <text x="760" y="294" font-family="ui-monospace,Menlo,monospace" font-size="20" fill="#5E5D59">opening start</text>
+    <text x="788" y="730" font-family="ui-monospace,Menlo,monospace" font-size="20" fill="#5E5D59">opening end</text>
+    <text x="100" y="100" font-family="ui-monospace,Menlo,monospace" font-size="20" fill="#5E5D59">safe area · 80px / side</text>
+  </svg>
+</div>
+<div style="font-size:11px;color:#80807a;margin-top:10px;line-height:1.55">
+  Ring radius <b style="color:#141413">256</b> on a 1024 grid (50% of canvas). Stroke <b style="color:#141413">56px</b> — 5.5% of canvas, matches the visual weight of `display` numerals. Opening sits between <b style="color:#141413">−15° → 75°</b>, sweeping clockwise <i>backwards</i> (large-arc=1, sweep=0). The opening points up-right because that's where Western readers look first — the ring receives them.
+</div>
+
+<!-- ============ iOS sizes ============ -->
+<div class="section-label">iOS Sizes — App Store down to Notification</div>
+<div class="sizes">
+  <div class="size-cell"><div class="icon" style="--r:36px;width:180px;height:180px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div><div class="meta"><b>1024</b>App Store</div></div>
+  <div class="size-cell"><div class="icon" style="--r:27px;width:120px;height:120px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div><div class="meta"><b>180</b>iPhone @3x</div></div>
+  <div class="size-cell"><div class="icon" style="--r:18px;width:80px;height:80px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div><div class="meta"><b>120</b>iPhone @2x</div></div>
+  <div class="size-cell"><div class="icon" style="--r:13px;width:60px;height:60px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div><div class="meta"><b>87</b>Settings @3x</div></div>
+  <div class="size-cell"><div class="icon" style="--r:10px;width:44px;height:44px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div><div class="meta"><b>60</b>Spotlight</div></div>
+  <div class="size-cell"><div class="icon" style="--r:8px;width:38px;height:38px"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div><div class="meta"><b>40</b>Notification</div></div>
+</div>
+<div style="font-size:11px;color:#80807a;margin-top:6px">
+  Same SVG at every size — the enso doesn't break apart at 40px because there's only one shape to see.
+</div>
+
+<!-- ============ Wordmark ============ -->
+<div class="section-label">Horizontal Wordmark</div>
+
+<div class="panel">
+  <div class="lockup lg">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div>
+    <div class="word">ZenCoin</div>
+  </div>
+  <div style="font-size:11px;color:#80807a;margin-top:18px">
+    Default lockup · <b style="color:#141413">New York Medium 64px</b> · icon = 1.5× cap-height · gap = 22px (cap-height × 0.45)
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px">
+  <div class="panel" style="padding:28px">
+    <div class="lockup">
+      <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div>
+      <div class="word">ZenCoin</div>
+    </div>
+    <div style="font-size:10.5px;color:#80807a;margin-top:14px;letter-spacing:0.06em;text-transform:uppercase">Default · 48px</div>
+  </div>
+  <div class="panel" style="padding:28px">
+    <div class="lockup sm">
+      <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div>
+      <div class="word">ZenCoin</div>
+    </div>
+    <div style="font-size:10.5px;color:#80807a;margin-top:14px;letter-spacing:0.06em;text-transform:uppercase">Inline · 28px (header / nav)</div>
+  </div>
+</div>
+
+<!-- ============ Theme variants ============ -->
+<div class="section-label">Across Themes</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+  <div class="panel" style="padding:28px">
+    <div class="lockup">
+      <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div>
+      <div class="word">ZenCoin</div>
+    </div>
+    <div style="font-size:10.5px;color:#80807a;margin-top:14px;letter-spacing:0.06em;text-transform:uppercase">Claude · default</div>
+  </div>
+
+  <div class="panel cursor" style="padding:28px">
+    <div class="lockup cursor">
+      <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F2F1ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#F54E00" stroke-width="56" stroke-linecap="round"/></svg></div>
+      <div class="word">ZenCoin</div>
+    </div>
+    <div style="font-size:10.5px;color:#80807a;margin-top:14px;letter-spacing:0.06em;text-transform:uppercase">Cursor</div>
+  </div>
+
+  <div class="panel cream" style="padding:28px">
+    <div class="lockup cream">
+      <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#FFFEFB"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#FF4F00" stroke-width="56" stroke-linecap="round"/></svg></div>
+      <div class="word">ZenCoin</div>
+    </div>
+    <div style="font-size:10.5px;color:#80807a;margin-top:14px;letter-spacing:0.06em;text-transform:uppercase">Zapier</div>
+  </div>
+
+  <div class="panel dark" style="padding:28px">
+    <div class="lockup dark">
+      <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#0A0A0A"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#10D9A0" stroke-width="56" stroke-linecap="round"/></svg></div>
+      <div class="word">ZenCoin</div>
+    </div>
+    <div style="font-size:10.5px;color:#A0A0A0;margin-top:14px;letter-spacing:0.06em;text-transform:uppercase">ElevenLabs · dark</div>
+  </div>
+</div>
+
+<!-- ============ Don't / Do ============ -->
+<div class="section-label">Don't · Do</div>
+<div class="doDont">
+  <div class="dd no">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><circle cx="512" cy="512" r="256" fill="none" stroke="#C96442" stroke-width="56"/></svg></div>
+    <div class="verdict">Don't</div>
+    <div class="why">Close the ring. A closed circle is a coin, not enso — kills the breath.</div>
+  </div>
+  <div class="dd no">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C96442"/><stop offset="100%" stop-color="#FFC107"/></linearGradient></defs><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="url(#grad)" stroke-width="56" stroke-linecap="round"/></svg></div>
+    <div class="verdict">Don't</div>
+    <div class="why">Gradient strokes. One color, one focal point — the design system forbids rainbows.</div>
+  </div>
+  <div class="dd yes">
+    <div class="icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div>
+    <div class="verdict">Do</div>
+    <div class="why">Solid terracotta on parchment. One stroke. One opening. Quiet.</div>
+  </div>
+</div>
+
+<!-- ============ Home screen ============ -->
+<div class="section-label">On the Home Screen</div>
+<div class="home">
+  <div class="home-grid">
+    <div class="app"><div class="app-icon filler3"></div><div class="app-name">Calendar</div></div>
+    <div class="app"><div class="app-icon filler1"></div><div class="app-name">Messages</div></div>
+    <div class="app"><div class="app-icon"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#F5F4ED"/><path d="M 740 304 A 256 256 0 1 0 768 712" fill="none" stroke="#C96442" stroke-width="56" stroke-linecap="round"/></svg></div><div class="app-name">ZenCoin</div></div>
+    <div class="app"><div class="app-icon filler4"></div><div class="app-name">Photos</div></div>
+    <div class="app"><div class="app-icon filler2"></div><div class="app-name">Notes</div></div>
+    <div class="app"><div class="app-icon filler5"></div><div class="app-name">Wallet</div></div>
+    <div class="app"><div class="app-icon filler6"></div><div class="app-name">Music</div></div>
+    <div class="app"><div class="app-icon filler7"></div><div class="app-name">Mail</div></div>
+  </div>
+</div>
+<div style="font-size:11px;color:#80807a;margin-top:10px;text-align:center">
+  Among iOS defaults: the only icon that <b style="color:#141413">isn't shouting</b>. That's the point.
+</div>
+
+<!-- ============ Files ============ -->
+<div class="section-label">Source Files</div>
+<div class="files" style="background:#FAF9F5;border-radius:12px;padding:22px 24px">
+  <div><span class="label">Master icon (1024)</span><br><a href="app-icon.svg">assets/app-icon.svg</a></div>
+  <div><span class="label">Wordmark · light</span><br><a href="wordmark-horizontal.svg">assets/wordmark-horizontal.svg</a></div>
+  <div><span class="label">All explorations</span><br><a href="app-icon-explorations.html">assets/app-icon-explorations.html</a></div>
+  <div><span class="label">Wordmark · dark</span><br><a href="wordmark-horizontal-dark.svg">assets/wordmark-horizontal-dark.svg</a></div>
+</div>
+
+<div style="font-size:11px;color:#80807a;margin-top:18px;line-height:1.6">
+  <b style="color:#141413">For Xcode:</b> drop <code>app-icon.svg</code> into Assets.xcassets → AppIcon → 1024×1024 slot. Xcode 14+ auto-generates all subsizes from the single 1024.
+  <br>
+  <b style="color:#141413">PNG export:</b> open the SVG in any vector tool (Figma / Sketch / Affinity / Inkscape) and export at 1024 / 180 / 120 / 87 / 60 / 40px. The SVG is parametric so it stays sharp at every size.
+</div>
+
+</div>
+</body></html>

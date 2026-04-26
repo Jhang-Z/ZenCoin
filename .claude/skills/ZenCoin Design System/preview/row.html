@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>ZenCoin · Row</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg-primary); }
+  .frame { padding: 0; }
+  .row { display: flex; align-items: center; gap: 14px; padding: 14px 24px; }
+  .icon { width: 36px; height: 36px; border-radius: 999px; background: var(--accent-muted); color: var(--accent); display: flex; align-items: center; justify-content: center; flex: none; }
+  .icon svg { width: 16px; height: 16px; }
+  .text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .title { font-size: 17px; font-weight: 500; color: var(--text-primary); font-family: var(--font-design); }
+  .sub   { font-size: 13px; color: var(--text-secondary); }
+  .amt   { font-size: 17px; font-weight: 500; font-feature-settings: "tnum"; }
+  .out   { color: var(--text-primary); }
+  .in    { color: var(--accent); }
+  .sep   { height: 1px; background: var(--separator); margin: 0 24px; }
+</style>
+</head><body data-theme="claude">
+<div class="frame">
+  <div class="row">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M5 2v20"/><path d="M21 12a4 4 0 0 0-4-4V2"/><path d="M17 22V12"/></svg></div>
+    <div class="text"><div class="title">公司食堂</div><div class="sub">餐饮 · 12:14</div></div>
+    <div class="amt out">−¥ 28.00</div>
+  </div>
+  <div class="sep"></div>
+  <div class="row">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div>
+    <div class="text"><div class="title">四月工资</div><div class="sub">工资 · 09:00</div></div>
+    <div class="amt in">+¥ 12,800.00</div>
+  </div>
+  <div class="sep"></div>
+  <div class="row">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>
+    <div class="text"><div class="title">日用</div><div class="sub">17:42</div></div>
+    <div class="amt out">−¥ 36.50</div>
+  </div>
+</div>
+</body></html>

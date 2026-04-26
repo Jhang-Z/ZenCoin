@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>ZenCoin — 闭环 · 方孔 · App Icon (1024)</title>
+  <desc>Closed ring with square hole at the geometric center. 圆外方内, 天圆地方.</desc>
+  <rect width="1024" height="1024" fill="#F5F4ED"></rect>
+  <circle cx="512" cy="512" r="256" fill="none" stroke="#C96442" stroke-width="56"></circle>
+  <rect x="464" y="464" width="96" height="96" fill="none" stroke="#C96442" stroke-width="20" stroke-linejoin="miter"></rect>
+</svg>

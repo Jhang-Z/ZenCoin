@@ -196,6 +196,8 @@ struct InsightView: View {
     private func row(slice: InsightViewModel.Slice, opacity: Double) -> some View {
         HStack(spacing: 14) {
             // 与 donut 切片同色的方块，作为图例
+            // 12pt 方块用 2pt 角 — 是有意的「sub-token 微 chrome」级别，
+            // 比 theme.radiusSmall (4-8pt) 更克制，避免在 12pt 方块上变成近圆形。
             RoundedRectangle(cornerRadius: 2)
                 .fill(theme.accent.opacity(opacity))
                 .frame(width: 12, height: 12)

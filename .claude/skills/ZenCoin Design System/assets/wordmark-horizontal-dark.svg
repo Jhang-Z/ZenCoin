@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 128" width="520" height="128">
+  <rect width="520" height="128" fill="#0A0A0A"></rect>
+  <g>
+    <rect x="0" y="0" width="128" height="128" rx="28" fill="#0A0A0A"></rect>
+    <path d="M 92.5 38 A 32 32 0 1 0 96 89" fill="none" stroke="#10D9A0" stroke-width="7" stroke-linecap="round"></path>
+  </g>
+  <text x="158" y="92" font-family="SF Pro Display, -apple-system, system-ui, sans-serif" font-size="76" font-weight="500" letter-spacing="-1" fill="#F5F5F5">ZenCoin</text>
+</svg>

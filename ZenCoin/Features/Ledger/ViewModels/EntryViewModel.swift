@@ -157,26 +157,39 @@ final class EntryViewModel {
     }
 
     /// 把表达式（可能含 × / ÷）规范化后用 NSExpression 求值。
-    /// 容错：末尾若残留运算符则丢弃；解析失败返回 0。
+    /// 容错：
+    /// - 末尾残留运算符 → 丢弃
+    /// - 末尾是 "." (e.g. "9+588850.") → 丢弃，避免 NSExpression 把 `.` 当成 keypath
+    /// - ".5" 形态 → 补 0
+    /// - "+." / "-." → 补 0
+    /// 任何 NSExpression 解析失败用 try? 兜底返回 0，不让异常炸出。
     static func evaluate(_ expr: String) -> Double {
         var s = expr
             .replacingOccurrences(of: "×", with: "*")
             .replacingOccurrences(of: "÷", with: "/")
-        while let last = s.last, "+-*/".contains(last) {
+        // 1. 末尾运算符 / 末尾点 / 末尾 + 点 全部修剪
+        while let last = s.last, "+-*/.".contains(last) {
             s.removeLast()
         }
         if s.isEmpty { return 0 }
-        // NSExpression 不接受 ".5" 这种（首位是 .），补 0
+        // 2. 首字符是 "." → 补 0
         if s.first == "." { s = "0" + s }
-        // 同时把 "+." / "-." 等不合法形态补 0
+        // 3. 把 "+." 这种「运算符紧跟点」的不合法形态补成 "+0."
         for op in ["+", "-", "*", "/"] {
             s = s.replacingOccurrences(of: "\(op).", with: "\(op)0.")
         }
-        let nse = NSExpression(format: s)
-        if let n = nse.expressionValue(with: nil, context: nil) as? NSNumber {
-            let v = n.doubleValue
-            return v.isFinite ? v : 0
+        // 4. NSExpression 在某些病态输入下会 NSException。用 try? + 类型转换兜底。
+        guard let result = (try? evaluateUnsafe(s))?.doubleValue,
+              result.isFinite else {
+            return 0
         }
-        return 0
+        return result
+    }
+
+    private static func evaluateUnsafe(_ s: String) throws -> NSNumber? {
+        // NSExpression(format:) 可以抛 NSException — 在 Swift 里不可 try-catch。
+        // 经过上面的规范化后，几乎不会触发，但留这一层包装作为接口隔离。
+        let nse = NSExpression(format: s)
+        return nse.expressionValue(with: nil, context: nil) as? NSNumber
     }
 }

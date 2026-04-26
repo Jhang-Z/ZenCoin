@@ -214,13 +214,6 @@ private struct BookEditorSheet: View {
                     RoundedRectangle(cornerRadius: theme.radiusSmall)
                         .fill(theme.bgSurface)
                 )
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("完成") { nameFocused = false }
-                            .foregroundStyle(theme.accent)
-                    }
-                }
 
             Button {
                 commit()
@@ -242,6 +235,7 @@ private struct BookEditorSheet: View {
         }
         .padding(.horizontal, 24)
         .padding(.top, 24)
+        .dismissKeyboardOnBackgroundTap()
         .background(theme.bgPrimary)
         .presentationDetents([.height(280)])
         .presentationDragIndicator(.hidden)

@@ -21,4 +21,6 @@ Package.resolved
 *.ipa
 *.dSYM.zip
 *.dSYM
-.claude/
+## Claude Code — skills / commands 提交进仓库，仅本地个人覆盖忽略
+.claude/settings.local.json
+.claude/.local/

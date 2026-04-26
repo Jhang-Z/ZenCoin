@@ -85,10 +85,13 @@ struct LedgerView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 14) {
-            // 永远显示账本指示器，便于切换。
-            if let store = bookStore, let book = store.currentBook {
-                BookChip(book: book) {
-                    showingBookSwitch = true
+            // 品牌标记 + 账本指示器并排，构成 header 第一行。
+            HStack(spacing: 10) {
+                ZenCoinMark(size: 22)
+                if let store = bookStore, let book = store.currentBook {
+                    BookChip(book: book) {
+                        showingBookSwitch = true
+                    }
                 }
             }
 
@@ -173,7 +176,7 @@ struct LedgerView: View {
                 .tracking(0.8)
                 .foregroundStyle(theme.textSecondary)
             Text(amountText(amount, signed: signed))
-                .font(theme.type.heading)
+                .font(theme.type.headingNumeric)
                 .monospacedDigit()
                 .foregroundStyle(amount == 0 ? theme.textSecondary : color)
         }

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>ZenCoin · Anti-patterns</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { padding: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .item { display: flex; gap: 10px; align-items: flex-start; }
+  .x, .ok { width: 18px; height: 18px; flex: none; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; }
+  .x  { background: rgba(181,51,51,0.12); color: var(--error); }
+  .ok { background: var(--accent-muted); color: var(--accent); }
+  .text { font-size: 12.5px; color: var(--text-primary); line-height: 1.45; }
+  .text b { font-weight: 600; }
+  .text span { color: var(--text-secondary); }
+</style>
+</head><body data-theme="claude">
+  <div class="item"><div class="x">×</div><div class="text"><b>List-row trash icon</b><br><span>breaks zen, repeats per row</span></div></div>
+  <div class="item"><div class="ok">✓</div><div class="text"><b>Detail page trash</b><br><span>or long-press → SummaryBar</span></div></div>
+  <div class="item"><div class="x">×</div><div class="text"><b>Month arrows ◀ ▶</b><br><span>redundant w/ tap + swipe</span></div></div>
+  <div class="item"><div class="ok">✓</div><div class="text"><b>Tap month → picker</b><br><span>swipe header for prev/next</span></div></div>
+  <div class="item"><div class="x">×</div><div class="text"><b>Rainbow gradients</b><br><span>multi-focus = no focus</span></div></div>
+  <div class="item"><div class="ok">✓</div><div class="text"><b>Single accent token</b><br><span>one color carries weight</span></div></div>
+  <div class="item"><div class="x">×</div><div class="text"><b>Shadows / glow</b><br><span>"AI feel", flat tokens fight it</span></div></div>
+  <div class="item"><div class="ok">✓</div><div class="text"><b>Hairline separators</b><br><span>1pt rule, no whitespace gaps</span></div></div>
+  <div class="item"><div class="x">×</div><div class="text"><b>Full-screen spinner</b><br><span>nags attention</span></div></div>
+  <div class="item"><div class="ok">✓</div><div class="text"><b>Inline progress / banner</b><br><span>quiet inline status</span></div></div>
+</body></html>

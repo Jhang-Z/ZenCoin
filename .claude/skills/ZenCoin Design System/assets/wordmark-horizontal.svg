@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 128" width="520" height="128">
+  <g>
+    <rect width="128" height="128" rx="28" fill="#F5F4ED"></rect>
+    <path d="M 92.5 38 A 32 32 0 1 0 96 89" fill="none" stroke="#C96442" stroke-width="7" stroke-linecap="round"></path>
+  </g>
+  <text x="158" y="92" font-family="New York, Iowan Old Style, Charter, Georgia, serif" font-size="80" font-weight="500" fill="#141413">ZenCoin</text>
+</svg>

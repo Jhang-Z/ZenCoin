@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>ZenCoin · App Icon Explorations</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin: 0; padding: 0; background: #ECEAE3; }
+  body { padding: 28px 22px 36px; font-family: var(--font-design); }
+
+  .group-title { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #5E5D59; margin: 6px 6px 14px; }
+  .group-title + .group-sub { font-size: 12px; color: #80807a; margin: -10px 6px 18px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px 22px; margin-bottom: 26px; }
+
+  .icon-cell { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .icon {
+    width: 128px; height: 128px;
+    border-radius: 28px;            /* iOS squircle approx */
+    overflow: hidden; position: relative;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04), 0 6px 18px rgba(20,20,19,0.08);
+  }
+  .icon svg { width: 100%; height: 100%; display: block; }
+  .name { font-size: 11.5px; font-weight: 500; color: #2a2a28; }
+  .desc { font-size: 10.5px; color: #80807a; text-align: center; max-width: 130px; line-height: 1.35; }
+
+  /* Home-screen mock for the favorite */
+  .home {
+    width: 100%;
+    background: #1d2226;
+    background-image:
+      radial-gradient(ellipse at 30% 20%, #3a4248 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, #25292c 0%, transparent 50%),
+      linear-gradient(180deg, #2a3036 0%, #14181b 100%);
+    border-radius: 36px;
+    padding: 28px 18px 24px;
+    margin-top: 6px;
+  }
+  .home-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 14px; }
+  .home .app { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .home .app-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; }
+  .home .app-name { font-size: 10px; color: rgba(255,255,255,0.92); font-family: -apple-system, system-ui; }
+  .home .app.feat .app-icon { width: 64px; height: 64px; }
+
+  /* simulated wallpaper apps */
+  .filler1 { background: linear-gradient(180deg,#34c759,#30b350); }
+  .filler2 { background: #fff; }
+  .filler3 { background: linear-gradient(180deg,#5e5ce6,#4a48c4); }
+  .filler4 { background: linear-gradient(180deg,#ff453a,#e23932); }
+  .filler5 { background: #000; border: 1px solid #222; }
+  .filler6 { background: linear-gradient(180deg,#5ac8fa,#0a84ff); }
+  .filler7 { background: #FAF9F5; }
+
+  h1 { font-size: 18px; font-weight: 500; color: #141413; margin: 0 0 4px; }
+  .lede { font-size: 12.5px; color: #5E5D59; margin: 0 0 22px; }
+</style>
+</head><body>
+
+<h1>ZenCoin · App Icon</h1>
+<div class="lede">Eight directions, all rooted in the design language: 克制, monochrome, no shadows on the artwork itself, never multi-color. Pick one to refine — or remix.</div>
+
+<!-- ============ Group A · Coin glyph ============ -->
+<div class="group-title">A · Coin glyph</div>
+<div class="group-sub">Read as ¢/¥ at a glance. The literal direction — but quiet.</div>
+<div class="grid">
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <circle cx="64" cy="64" r="36" fill="none" stroke="#C96442" stroke-width="3.5"/>
+        <text x="64" y="78" font-family="New York, Georgia, serif" font-size="44" font-weight="500" fill="#C96442" text-anchor="middle">¥</text>
+      </svg>
+    </div>
+    <div class="name">A1 · Parchment ¥</div>
+    <div class="desc">Claude theme, serif yuan, hairline ring.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#C96442"/>
+        <text x="64" y="83" font-family="New York, Georgia, serif" font-size="74" font-weight="500" fill="#F5F4ED" text-anchor="middle">¥</text>
+      </svg>
+    </div>
+    <div class="name">A2 · Solid terracotta</div>
+    <div class="desc">Inverse — accent fills the field.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <circle cx="64" cy="64" r="40" fill="#C96442"/>
+        <text x="64" y="79" font-family="New York, Georgia, serif" font-size="46" font-weight="500" fill="#F5F4ED" text-anchor="middle">¥</text>
+      </svg>
+    </div>
+    <div class="name">A3 · Coin in field</div>
+    <div class="desc">A coin literally — minted on parchment.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <circle cx="64" cy="64" r="42" fill="none" stroke="#C96442" stroke-width="2"/>
+        <line x1="64" y1="36" x2="64" y2="92" stroke="#C96442" stroke-width="2"/>
+        <line x1="50" y1="56" x2="78" y2="56" stroke="#C96442" stroke-width="2"/>
+        <line x1="50" y1="68" x2="78" y2="68" stroke="#C96442" stroke-width="2"/>
+        <path d="M50 44 L64 56 L78 44" stroke="#C96442" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="name">A4 · Engraved yuan</div>
+    <div class="desc">Coin-stamp construction, geometric.</div>
+  </div>
+</div>
+
+<!-- ============ Group B · Zen mark ============ -->
+<div class="group-title">B · Zen mark</div>
+<div class="group-sub">Lean into the Zen half of the name. Less literal, more identity.</div>
+<div class="grid">
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <!-- enso brushstroke, broken ring -->
+        <path d="M 92 38
+                 A 32 32 0 1 0 96 90"
+              fill="none" stroke="#C96442" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="name">B1 · Enso</div>
+    <div class="desc">An open ring. The zen brushstroke, full stop.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <path d="M 92 40
+                 A 32 32 0 1 0 96 88"
+              fill="none" stroke="#141413" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="64" cy="64" r="6" fill="#C96442"/>
+      </svg>
+    </div>
+    <div class="name">B2 · Enso + dot</div>
+    <div class="desc">Coin sits inside the ring — story in two marks.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <!-- single horizontal stone, very horizon-ish -->
+        <line x1="22" y1="64" x2="106" y2="64" stroke="#141413" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="64" cy="64" r="9" fill="#C96442"/>
+      </svg>
+    </div>
+    <div class="name">B3 · Horizon coin</div>
+    <div class="desc">A line + a dot. Quietest possible.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <!-- stacked stones -->
+        <ellipse cx="64" cy="92" rx="22" ry="6" fill="#141413"/>
+        <ellipse cx="64" cy="74" rx="16" ry="5" fill="#141413"/>
+        <ellipse cx="64" cy="60" rx="11" ry="4" fill="#141413"/>
+        <circle cx="64" cy="44" r="6" fill="#C96442"/>
+      </svg>
+    </div>
+    <div class="name">B4 · Cairn</div>
+    <div class="desc">Stacked balance. A coin on top.</div>
+  </div>
+</div>
+
+<!-- ============ Group C · Donut & ledger ============ -->
+<div class="group-title">C · Product mark</div>
+<div class="group-sub">Reference the actual UI: donut ring, two-line ledger, IN/OUT split.</div>
+<div class="grid">
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <!-- donut chart with one larger slice -->
+        <circle cx="64" cy="64" r="34" fill="none" stroke="#C96442" stroke-width="14" stroke-opacity="0.28"/>
+        <circle cx="64" cy="64" r="34" fill="none" stroke="#C96442" stroke-width="14"
+                stroke-dasharray="120 213.6" transform="rotate(-90 64 64)"/>
+      </svg>
+    </div>
+    <div class="name">C1 · Donut</div>
+    <div class="desc">The Insight donut, minted at icon scale.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <!-- Two abstract ledger lines -->
+        <rect x="28" y="48" width="40" height="6" rx="3" fill="#141413"/>
+        <rect x="28" y="74" width="60" height="6" rx="3" fill="#141413"/>
+        <!-- accent dot for the active row -->
+        <circle cx="20" cy="51" r="3" fill="#C96442"/>
+        <circle cx="20" cy="77" r="3" fill="#C96442"/>
+      </svg>
+    </div>
+    <div class="name">C2 · Two-line ledger</div>
+    <div class="desc">An entry list reduced to its rhythm.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <!-- IN / OUT divided field -->
+        <rect x="0" y="0" width="64" height="128" fill="#C96442"/>
+        <text x="32" y="74" font-family="-apple-system,system-ui" font-size="22" font-weight="500" letter-spacing="2" fill="#F5F4ED" text-anchor="middle">IN</text>
+        <text x="96" y="74" font-family="-apple-system,system-ui" font-size="20" font-weight="500" letter-spacing="2" fill="#141413" text-anchor="middle">OUT</text>
+      </svg>
+    </div>
+    <div class="name">C3 · IN / OUT</div>
+    <div class="desc">The bilingual rule, made into a mark.</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <!-- plus button — the literal three-tap entrypoint -->
+        <circle cx="64" cy="64" r="38" fill="#C96442"/>
+        <line x1="64" y1="46" x2="64" y2="82" stroke="#F5F4ED" stroke-width="6" stroke-linecap="round"/>
+        <line x1="46" y1="64" x2="82" y2="64" stroke="#F5F4ED" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="name">C4 · The button</div>
+    <div class="desc">The floating + the user knows. Confident.</div>
+  </div>
+</div>
+
+<!-- ============ Group D · Theme variants of favorite ============ -->
+<div class="group-title">D · Across themes (B2 · Enso + dot)</div>
+<div class="group-sub">A single direction, dressed in each of the four theme presets.</div>
+<div class="grid">
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F5F4ED"/>
+        <path d="M 92 40 A 32 32 0 1 0 96 88" fill="none" stroke="#141413" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="64" cy="64" r="6" fill="#C96442"/>
+      </svg>
+    </div>
+    <div class="name">Claude</div>
+    <div class="desc">parchment + terracotta dot</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#F2F1ED"/>
+        <path d="M 92 40 A 32 32 0 1 0 96 88" fill="none" stroke="#26251E" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="64" cy="64" r="6" fill="#F54E00"/>
+      </svg>
+    </div>
+    <div class="name">Cursor</div>
+    <div class="desc">cream + bright orange dot</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#FFFEFB"/>
+        <path d="M 92 40 A 32 32 0 1 0 96 88" fill="none" stroke="#201515" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="64" cy="64" r="6" fill="#FF4F00"/>
+      </svg>
+    </div>
+    <div class="name">Zapier</div>
+    <div class="desc">white + vivid orange</div>
+  </div>
+
+  <div class="icon-cell">
+    <div class="icon">
+      <svg viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#0A0A0A"/>
+        <path d="M 92 40 A 32 32 0 1 0 96 88" fill="none" stroke="#F5F5F5" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="64" cy="64" r="6" fill="#10D9A0"/>
+      </svg>
+    </div>
+    <div class="name">ElevenLabs</div>
+    <div class="desc">black + mint dot</div>
+  </div>
+</div>
+
+<!-- ============ Home screen test ============ -->
+<div class="group-title">On the home screen</div>
+<div class="group-sub">B2 next to typical iOS apps. The quiet one is the point.</div>
+<div class="home">
+  <div class="home-grid">
+    <div class="app"><div class="app-icon filler3"></div><div class="app-name">Calendar</div></div>
+    <div class="app"><div class="app-icon filler1"></div><div class="app-name">Messages</div></div>
+    <div class="app feat">
+      <div class="app-icon">
+        <svg viewBox="0 0 128 128"><rect width="128" height="128" fill="#F5F4ED"/><path d="M 92 40 A 32 32 0 1 0 96 88" fill="none" stroke="#141413" stroke-width="6" stroke-linecap="round"/><circle cx="64" cy="64" r="6" fill="#C96442"/></svg>
+      </div>
+      <div class="app-name">ZenCoin</div>
+    </div>
+    <div class="app"><div class="app-icon filler4"></div><div class="app-name">Photos</div></div>
+    <div class="app"><div class="app-icon filler2"></div><div class="app-name">Notes</div></div>
+    <div class="app"><div class="app-icon filler5"></div><div class="app-name">Wallet</div></div>
+    <div class="app"><div class="app-icon filler6"></div><div class="app-name">Music</div></div>
+    <div class="app"><div class="app-icon filler7"></div><div class="app-name">Mail</div></div>
+  </div>
+</div>
+
+</body></html>

@@ -246,13 +246,6 @@ struct SettingsView: View {
                 )
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("完成") { aiKeyFieldFocused = false }
-                            .foregroundStyle(theme.accent)
-                    }
-                }
 
             HStack(spacing: 10) {
                 if aiKeyService.hasAPIKey {
@@ -293,5 +286,6 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 24)
         .padding(.top, 24)
+        .dismissKeyboardOnBackgroundTap()
     }
 }
