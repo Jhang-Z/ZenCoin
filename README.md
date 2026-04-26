@@ -150,7 +150,9 @@ xcodebuild -project ZenCoin.xcodeproj \
 | AI Backend | 阿里云百炼 `qwen-vl-max-latest` | 支付截图视觉理解 |
 | 系统集成 System | App Intents · iOS Shortcuts · Back Tap | 后台静默 AI 记账 |
 | Keychain | `Security.framework` | 存储 API Key |
-| 字体 Typography | SF Pro · New York (`Font.Design.serif`) | 跟随主题切换 |
+| 字体 Typography | SF Pro · New York · STSongti SC | 主题感知，CJK / Latin 分别用对应衬线 |
+| 图表 Charts | 自绘 SwiftUI Path / Shape | Donut / 引线 / 日历热图 |
+| 设计系统 Design System | [`.claude/skills/ZenCoin Design System`](.claude/skills/ZenCoin%20Design%20System) | Token / preview / UI kit 全套 skill |
 
 ---
 
@@ -188,6 +190,8 @@ graph TD
 2. **Book 作用域过滤** — `Expense.bookId` 是每条记录的归属。所有 fetch 都带 `#Predicate { $0.bookId == bookId }`，AppIntent 通过 `UserDefaults` 共享 `currentBookId`，保证后台记账落到正确账本。
 3. **AppIntent + Shortcuts** — `openAppWhenRun: false` 让 AI 记账完全在后台扩展进程中跑，独立打开 SwiftData 容器写入，并通过 `NotificationCenter` 通知前台 app 刷新。
 4. **自绘 donut + 引线分布算法** — 切片按半圆分组 → 各侧按 Y 排序 → 双向 sweep 强制最小垂直间隔 → L 形引线连接。最多 6 段（top-5 + 「其他」聚合）的场景收敛干净。
+5. **`heading` / `headingNumeric` 双 token 排版** — Claude 衬线主题下，CJK 文本（行标题）走 STSongti SC，数字（金额）走 system serif（New York）。SwiftUI `Font.system(.serif)` 的汉字会 fallback 到 PingFang sans —— 这套 split 是绕开这个 fallback 的解法，让中英衬线同时存在不混排违和。
+6. **品牌标记矢量重绘** — [`ZenCoinMark`](ZenCoin/Core/UI/ZenCoinMark.swift) 用 `Circle` + `Rectangle` 1:1 重绘 SVG app icon 的几何，自动跟随 `theme.accent` 着色 —— 4 套主题不需要 4 张 PNG。
 
 ---
 
@@ -197,13 +201,15 @@ graph TD
 ZenCoin/
 ├── DESIGN.md                       # 自有设计语言（哲学 / 色彩 / 字号 / 反模式）
 ├── project.yml                     # XcodeGen 配置
+├── .claude/skills/
+│   └── ZenCoin Design System/      # 全套 design system skill（token/preview/uikit）
 ├── ZenCoin/
 │   ├── ZenCoinApp.swift            # @main + ModelContainer
 │   ├── Core/
 │   │   ├── Notifications/          # NotificationCenter 名字
 │   │   ├── Storage/                # KeychainService
 │   │   ├── Theme/                  # ThemeID / Tokens / Presets / Typography
-│   │   └── UI/                     # ZenConfirmDialog（替代系统弹窗）
+│   │   └── UI/                     # ZenConfirmDialog · ZenCoinMark · KeyboardDismiss
 │   ├── Features/
 │   │   ├── AI/
 │   │   │   ├── Intent/             # AddExpenseFromScreenshot · ExpenseShortcuts
@@ -214,15 +220,17 @@ ZenCoin/
 │   │   │   └── Views/              # BookChip · BookSwitchSheet · BookManagementView
 │   │   ├── Insight/
 │   │   │   ├── ViewModels/         # InsightViewModel
-│   │   │   └── Views/              # InsightView · DonutChartView · CalendarHeatmapView · YearPickerSheet
+│   │   │   └── Views/              # InsightView · DonutChartView · DonutSlice · CalendarHeatmapView · YearPickerSheet
 │   │   ├── Ledger/
-│   │   │   ├── Models/             # Expense @Model · ExpenseCategory
+│   │   │   ├── Models/             # Expense @Model · ExpenseCategory（12 支出 + 4 收入）
 │   │   │   ├── Services/           # ExpenseDataService
-│   │   │   ├── ViewModels/         # LedgerViewModel · EntryViewModel
-│   │   │   └── Views/              # RootView · LedgerView · EntrySheet · ExpenseDetailView · …
+│   │   │   ├── ViewModels/         # LedgerViewModel · EntryViewModel（含 NSExpression 求值器）
+│   │   │   └── Views/              # RootView · LedgerView · EntrySheet · ExpenseDetailView · AmountKeypadView · …
 │   │   └── Settings/
 │   │       └── Views/              # SettingsView · ThemePickerView
-│   └── Resources/Info.plist
+│   └── Resources/
+│       ├── Info.plist
+│       └── Assets.xcassets/        # AppIcon（闭环 + 内方）
 └── docs/                           # 设计 spec / 实现 plan
 ```
 
@@ -257,9 +265,14 @@ static let iCloudLink: String = "https://www.icloud.com/shortcuts/xxxxxxxxxx"
 - [x] AI 截图记账 AI shortcut entry
 - [x] 月度 / 年度 donut + 日历热图
 - [x] 4 套主题（含暗色 ElevenLabs）
+- [x] 计算键盘 + NSExpression 表达式求值
+- [x] App icon · 「闭环 + 内方」/ 中国古钱币几何
 - [ ] iCloud 同步 CloudKit sync <!-- TODO: 评估 -->
 - [ ] 预算 Budget alerts
 - [ ] 数据导出（CSV / JSON）Data export
+- [ ] Apple Pay Wallet Transaction 自动记账（iOS 17+）
+- [ ] Control Center 自定义 Control（iOS 18+）
+- [ ] Share Extension（任意 app 长按图分享给 ZenCoin）
 - [ ] Apple Watch widget
 - [ ] 多语言（en-US）i18n
 
