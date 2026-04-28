@@ -1,6 +1,6 @@
 # ZenCoin
 
-> **安静记账 · Quietly counting.**
+> ** Quietly counting.**
 > 一款专为 iOS 打造的禅意记账 app —— 三下记账，一眼了然。
 > A zen-minimal iOS bookkeeping app — three taps to record, one glance to know.
 
