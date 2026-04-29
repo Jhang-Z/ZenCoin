@@ -5,11 +5,14 @@ struct SelectionSummaryBar: View {
     let count: Int
     let totalExpense: Double
     let totalIncome: Double
+    /// 是否显示「移动」按钮（只有多账本场景才有意义）
+    let canMove: Bool
     let onClear: () -> Void
+    let onMove: () -> Void
     let onDelete: () -> Void
 
     var body: some View {
-        HStack(alignment: .center, spacing: 16) {
+        HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
                 Text("SELECTED · \(count)")
                     .font(theme.type.micro)
@@ -24,7 +27,7 @@ struct SelectionSummaryBar: View {
                 Text("取消")
                     .font(theme.type.body)
                     .foregroundStyle(theme.textSecondary)
-                    .padding(.horizontal, 14)
+                    .padding(.horizontal, 12)
                     .padding(.vertical, 10)
                     .background(
                         RoundedRectangle(cornerRadius: theme.radiusSmall)
@@ -33,11 +36,32 @@ struct SelectionSummaryBar: View {
             }
             .buttonStyle(.plain)
 
+            if canMove {
+                Button(action: onMove) {
+                    Text("移动")
+                        .font(theme.type.body)
+                        .foregroundStyle(theme.textPrimary)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 10)
+                        .background(
+                            RoundedRectangle(cornerRadius: theme.radiusSmall)
+                                .fill(theme.bgSurface)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: theme.radiusSmall)
+                                        .stroke(theme.separator, lineWidth: 1)
+                                )
+                        )
+                }
+                .buttonStyle(.plain)
+                .disabled(count == 0)
+                .opacity(count == 0 ? 0.4 : 1)
+            }
+
             Button(action: onDelete) {
                 Text("删除")
                     .font(theme.type.body.weight(.semibold))
                     .foregroundStyle(theme.bgPrimary)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 14)
                     .padding(.vertical, 10)
                     .background(
                         RoundedRectangle(cornerRadius: theme.radiusSmall)

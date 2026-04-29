@@ -1,12 +1,12 @@
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @Environment(\.theme) private var theme
     @Environment(\.themeManager) private var themeManager
     @Environment(\.modelContext) private var modelContext
     @Environment(\.bookStore) private var bookStore
-    @Environment(\.dismiss) private var dismiss
 
     @State private var currency: CurrencySymbol = CurrencyFormatter.symbol
     @State private var confirmingErase = false
@@ -14,6 +14,22 @@ struct SettingsView: View {
     @State private var aiKeyDraft: String = ""
     @State private var showingAIKeyEditor = false
     @FocusState private var aiKeyFieldFocused: Bool
+
+    // Import / Export state
+    @State private var showingImporter = false
+    @State private var importPreview: WeChatPayParser.Result?
+    @State private var importError: String?
+    @State private var exportFile: ExportPayload?
+
+    private struct ExportPayload: Identifiable, Transferable {
+        let id = UUID()
+        let url: URL
+        static var transferRepresentation: some TransferRepresentation {
+            FileRepresentation(exportedContentType: .commaSeparatedText) { payload in
+                SentTransferredFile(payload.url)
+            }
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -132,6 +148,44 @@ struct SettingsView: View {
 
                 section(title: "DATA / 数据") {
                     Button {
+                        showingImporter = true
+                    } label: {
+                        rowChrome {
+                            HStack {
+                                Text("导入微信账单")
+                                    .font(theme.type.body)
+                                    .foregroundStyle(theme.textPrimary)
+                                Spacer()
+                                Text("CSV")
+                                    .font(theme.type.caption)
+                                    .tracking(0.6)
+                                    .foregroundStyle(theme.textSecondary)
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundStyle(theme.textSecondary)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+
+                    Button {
+                        prepareExport()
+                    } label: {
+                        rowChrome {
+                            HStack {
+                                Text("导出当前账本")
+                                    .font(theme.type.body)
+                                    .foregroundStyle(theme.textPrimary)
+                                Spacer()
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundStyle(theme.textSecondary)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+
+                    Button {
                         confirmingErase = true
                     } label: {
                         rowChrome {
@@ -176,17 +230,116 @@ struct SettingsView: View {
         .background(theme.bgPrimary.ignoresSafeArea())
         .navigationTitle("设置")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("完成") { dismiss() }
-                    .foregroundStyle(theme.accent)
-            }
-        }
+        .presentationDragIndicator(.visible)
         .sheet(isPresented: $showingAIKeyEditor) {
             aiKeyEditor
                 .presentationDetents([.height(320)])
                 .presentationBackground(theme.bgPrimary)
         }
+        .fileImporter(
+            isPresented: $showingImporter,
+            allowedContentTypes: [
+                .commaSeparatedText,
+                .text,
+                .spreadsheet,
+                UTType(filenameExtension: "xlsx") ?? .data,
+                .data,
+            ],
+            allowsMultipleSelection: false
+        ) { result in
+            handleImporterResult(result)
+        }
+        .sheet(item: $importPreview) { preview in
+            ImportPreviewSheet(parseResult: preview)
+                .presentationBackground(theme.bgPrimary)
+        }
+        .sheet(item: $exportFile) { payload in
+            exportShareSheet(payload: payload)
+                .presentationDetents([.height(220)])
+                .presentationBackground(theme.bgPrimary)
+        }
+        .alert("导入失败", isPresented: Binding(
+            get: { importError != nil },
+            set: { if !$0 { importError = nil } }
+        ), actions: {
+            Button("好") { importError = nil }
+        }, message: {
+            Text(importError ?? "")
+        })
+    }
+
+    // MARK: - Import / Export
+
+    private func handleImporterResult(_ result: Result<[URL], Error>) {
+        switch result {
+        case .failure(let err):
+            importError = err.localizedDescription
+        case .success(let urls):
+            guard let url = urls.first else { return }
+            // file 来自 documents picker，需要 security scope
+            let scoped = url.startAccessingSecurityScopedResource()
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let data = try Data(contentsOf: url)
+                let parsed = try WeChatPayParser.parse(data)
+                if parsed.drafts.isEmpty {
+                    importError = "文件没有可导入的记录"
+                } else {
+                    importPreview = parsed
+                }
+            } catch {
+                importError = error.localizedDescription
+            }
+        }
+    }
+
+    private func prepareExport() {
+        let svc = ExpenseDataService(modelContext: modelContext)
+        let bid = bookStore?.currentBookId ?? Book.defaultID
+        do {
+            let all = try svc.fetchAll(bookId: bid)
+            guard !all.isEmpty else {
+                importError = "当前账本没有记录"
+                return
+            }
+            let data = ExpenseExporter.export(all)
+            let bookName = bookStore?.currentBook?.name ?? Book.defaultName
+            let filename = ExpenseExporter.suggestedFilename(bookName: bookName)
+            let tmp = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+            try data.write(to: tmp, options: .atomic)
+            exportFile = ExportPayload(url: tmp)
+        } catch {
+            importError = error.localizedDescription
+        }
+    }
+
+    @ViewBuilder
+    private func exportShareSheet(payload: ExportPayload) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("EXPORT / 导出")
+                .font(theme.type.micro)
+                .tracking(0.8)
+                .foregroundStyle(theme.textSecondary)
+            Text(payload.url.lastPathComponent)
+                .font(theme.type.body)
+                .foregroundStyle(theme.textPrimary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+            ShareLink(item: payload, preview: SharePreview(payload.url.lastPathComponent)) {
+                Text("分享 / 保存")
+                    .font(theme.type.body.weight(.semibold))
+                    .foregroundStyle(theme.bgPrimary)
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .background(
+                        RoundedRectangle(cornerRadius: theme.radiusSmall)
+                            .fill(theme.accent)
+                    )
+            }
+            .buttonStyle(.plain)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 24)
     }
 
     @ViewBuilder

@@ -41,7 +41,11 @@ struct LedgerView: View {
                             books: store.books,
                             currentBookId: store.currentBookId,
                             onPick: { id in store.currentBookId = id },
-                            onManage: { showingSettings = true }
+                            onCreate: { name in
+                                if let created = store.create(name: name) {
+                                    store.currentBookId = created.id
+                                }
+                            }
                         )
                         .presentationBackground(theme.bgPrimary)
                     }
@@ -86,8 +90,8 @@ struct LedgerView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 14) {
             // 品牌标记 + 账本指示器并排，构成 header 第一行。
-            HStack(spacing: 10) {
-                ZenCoinMark(size: 22)
+            HStack(spacing: 12) {
+                ZenCoinMark(size: 26)
                 if let store = bookStore, let book = store.currentBook {
                     BookChip(book: book) {
                         showingBookSwitch = true
@@ -210,7 +214,7 @@ struct LedgerView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ForEach(vm.groupedByDay, id: \.date) { group in
-                    dayHeader(group.date)
+                    dayHeader(group.date, items: group.items)
                     ForEach(group.items) { entry in
                         EntryRowView(
                             entry: entry,
@@ -235,15 +239,27 @@ struct LedgerView: View {
         }
     }
 
-    private func dayHeader(_ date: Date) -> some View {
+    private func dayHeader(_ date: Date, items: [Expense]) -> some View {
         let f = DateFormatter()
         f.locale = Locale(identifier: "zh_CN")
         f.dateFormat = "M 月 d 日 · EEEE"
-        return HStack {
+        let dayExpense = items.filter { !$0.isIncome }.reduce(0.0) { $0 + $1.amount }
+        return HStack(spacing: 0) {
             Text(f.string(from: date))
                 .font(theme.type.micro)
                 .tracking(0.6)
                 .foregroundStyle(theme.textSecondary)
+            if dayExpense > 0 {
+                Text(" · ")
+                    .font(theme.type.micro)
+                    .tracking(0.6)
+                    .foregroundStyle(theme.textSecondary)
+                Text(CurrencyFormatter.format(dayExpense))
+                    .font(theme.type.micro)
+                    .tracking(0.6)
+                    .monospacedDigit()
+                    .foregroundStyle(theme.textSecondary)
+            }
             Spacer()
         }
         .padding(.horizontal, 24)

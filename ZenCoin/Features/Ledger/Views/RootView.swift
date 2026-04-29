@@ -4,6 +4,7 @@ import SwiftData
 struct RootView: View {
     @Environment(\.theme) private var theme
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.bookStore) private var bookStore
 
     @State private var selectedTab: Tab = .ledger
     @State private var showingEntry = false
@@ -11,6 +12,7 @@ struct RootView: View {
     @State private var ledgerVM: LedgerViewModel?
     @State private var selection = LedgerSelectionStore()
     @State private var confirmingBatchDelete = false
+    @State private var showingMoveSheet = false
 
     enum Tab { case ledger, insight }
 
@@ -64,16 +66,33 @@ struct RootView: View {
             ledgerVM?.deleteMany(ids: selection.ids)
             selection.exit()
         }
+        .sheet(isPresented: $showingMoveSheet) {
+            if let store = bookStore {
+                BookPickerSheet(
+                    books: store.books,
+                    excludeId: store.currentBookId,
+                    title: "MOVE TO / 移动到"
+                ) { targetId in
+                    ledgerVM?.moveMany(ids: selection.ids, toBookId: targetId)
+                    selection.exit()
+                }
+                .presentationBackground(theme.bgPrimary)
+            }
+        }
     }
 
     private var selectionBar: some View {
         let totals: (expense: Double, income: Double) =
             ledgerVM?.selectionTotals(ids: selection.ids) ?? (expense: 0, income: 0)
+        // 至少要有 2 个账本（来源 + 至少 1 个目标）才显示「移动」
+        let canMove = (bookStore?.books.count ?? 0) >= 2
         return SelectionSummaryBar(
             count: selection.ids.count,
             totalExpense: totals.expense,
             totalIncome: totals.income,
+            canMove: canMove,
             onClear: { selection.exit() },
+            onMove: { showingMoveSheet = true },
             onDelete: { confirmingBatchDelete = true }
         )
     }
