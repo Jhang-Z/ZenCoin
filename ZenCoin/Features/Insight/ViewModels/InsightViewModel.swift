@@ -76,6 +76,23 @@ final class InsightViewModel {
 
     // MARK: - Calendar 数据
 
+    /// 取某一天的支出明细（按时间倒序）。
+    func entries(on day: Date) -> [Expense] {
+        let cal = Calendar.current
+        let target = cal.startOfDay(for: day)
+        return expenses
+            .filter { cal.startOfDay(for: $0.paymentTime) == target }
+            .sorted { $0.paymentTime > $1.paymentTime }
+    }
+
+    /// 取某月（1...12）的支出明细（按时间倒序），用于年模式下点击月份格。
+    func entries(inMonth m: Int) -> [Expense] {
+        let cal = Calendar.current
+        return expenses
+            .filter { cal.component(.month, from: $0.paymentTime) == m }
+            .sorted { $0.paymentTime > $1.paymentTime }
+    }
+
     /// 月模式下：日历每天的支出总额（key 是该天的 startOfDay）。
     var dayTotals: [Date: Double] {
         let cal = Calendar.current

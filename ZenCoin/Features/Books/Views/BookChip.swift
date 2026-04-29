@@ -13,21 +13,20 @@ struct BookChip: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 6) {
+            HStack(spacing: 8) {
                 Circle()
                     .fill(isDefault ? theme.textSecondary : theme.accent)
-                    .frame(width: 6, height: 6)
+                    .frame(width: 8, height: 8)
                 Text(book.name)
-                    .font(theme.type.micro)
-                    .tracking(0.6)
+                    .font(theme.type.body)
                     .foregroundStyle(theme.textPrimary)
                     .lineLimit(1)
                 Image(systemName: "chevron.down")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(theme.textSecondary)
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
             .background(
                 Capsule()
                     .stroke(

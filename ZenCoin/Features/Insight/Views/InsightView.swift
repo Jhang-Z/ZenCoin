@@ -9,6 +9,17 @@ struct InsightView: View {
     @State private var viewModel: InsightViewModel?
     @State private var showingMonthPicker = false
     @State private var showingYearPicker = false
+    @State private var pickedPeriod: PickedPeriod?
+
+    private struct PickedPeriod: Identifiable {
+        let period: BillsSheet.Period
+        var id: String {
+            switch period {
+            case .day(let d):           return "d-\(d.timeIntervalSince1970)"
+            case .month(let y, let m):  return "m-\(y)-\(m)"
+            }
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -61,6 +72,18 @@ struct InsightView: View {
                     vm.setYear(y)
                 }
                 .presentationBackground(theme.bgPrimary)
+            }
+        }
+        .sheet(item: $pickedPeriod) { picked in
+            if let vm = viewModel {
+                let items: [Expense] = {
+                    switch picked.period {
+                    case .day(let d):           return vm.entries(on: d)
+                    case .month(_, let m):      return vm.entries(inMonth: m)
+                    }
+                }()
+                BillsSheet(period: picked.period, entries: items)
+                    .presentationBackground(theme.bgPrimary)
             }
         }
     }
@@ -163,15 +186,25 @@ struct InsightView: View {
                 .foregroundStyle(theme.textSecondary)
             switch vm.scope {
             case .month:
-                CalendarHeatmapView(mode: .month(
-                    days: vm.monthCalendarDays,
-                    dayTotals: vm.dayTotals
-                ))
+                CalendarHeatmapView(
+                    mode: .month(
+                        days: vm.monthCalendarDays,
+                        dayTotals: vm.dayTotals
+                    ),
+                    onPickDay: { day in
+                        pickedPeriod = PickedPeriod(period: .day(day))
+                    }
+                )
             case .year:
-                CalendarHeatmapView(mode: .year(
-                    year: vm.year,
-                    monthTotals: vm.monthTotals
-                ))
+                CalendarHeatmapView(
+                    mode: .year(
+                        year: vm.year,
+                        monthTotals: vm.monthTotals
+                    ),
+                    onPickMonth: { m in
+                        pickedPeriod = PickedPeriod(period: .month(year: vm.year, month: m))
+                    }
+                )
             }
         }
     }

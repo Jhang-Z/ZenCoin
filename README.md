@@ -37,8 +37,12 @@
   *Default book + scenario books (Travel / Renovation / …); switch in one tap, isolated stats.*
 - 🤖 **AI 截图记账 AI shortcut entry** — 通过 iOS Shortcuts + 阿里云百炼 `qwen-vl-max-latest` 识别支付截图，背面双击 → 后台静默写入
   *AppIntent + Bailian Vision parses payment screenshots. Bind to Back-Tap, runs silently in background.*
-- 🍩 **统计圆盘 Donut insight** — 自绘环形分类图 + 外置标签 + 引线，旁边附月度/年度日历热图
-  *Custom donut chart with side-stacked labels & leader lines; paired with month/year heatmap calendar.*
+- 📥 **账单导入 / 导出 Bill import & export** — 微信支付账单（xlsx / csv）一键导入；同名 CSV schema 导出当前账本，可备份 round-trip
+  *WeChat Pay statement (xlsx + csv) one-tap import; export current book to ZenCoin-schema CSV for round-trip backup.*
+- 🧠 **AI 批量分类 + 备注清理 AI batch classify & note polish** — 关键词字典 deterministic 命中 → AI（`qwen-max-latest`）兜底未命中行：批量并行 + 进度条 banner，识别真实商家、剥订单尾巴
+  *Deterministic keyword first; AI batch classify (chunked + parallel) for the long tail, plus note clean-up that recognizes platform-mediated merchants and strips order-id suffixes.*
+- 🍩 **统计圆盘 Donut insight** — 自绘环形分类图 + 外置标签 + 引线，旁边附月度/年度日历热图；点击日期/月份格弹出当期账单明细
+  *Custom donut chart with side-stacked labels & leader lines; paired with month/year heatmap. Tap day/month cell to inspect that period's bills in a sheet.*
 - 🎨 **四套主题 Four themes** — Claude（羊皮纸 · serif）/ Cursor（暖奶油）/ Zapier（米白）/ ElevenLabs（深色薄荷），每套 token 独立
   *Theme presets inspired by Anthropic / Cursor / Zapier / ElevenLabs design systems.*
 - 🧮 **简单计算键盘 Calculator keypad** — 自绘金额键盘支持 `+ − × ÷` 表达式，求值预览实时显示
@@ -221,13 +225,17 @@ ZenCoin/
 │   │   ├── Insight/
 │   │   │   ├── ViewModels/         # InsightViewModel
 │   │   │   └── Views/              # InsightView · DonutChartView · DonutSlice · CalendarHeatmapView · YearPickerSheet
+│   │   ├── Insight/
+│   │   │   └── Views/              # …包括 BillsSheet（点日期/月份格弹出当期账单 sheet）
 │   │   ├── Ledger/
 │   │   │   ├── Models/             # Expense @Model · ExpenseCategory（12 支出 + 4 收入）
-│   │   │   ├── Services/           # ExpenseDataService
+│   │   │   ├── Services/
+│   │   │   │   ├── ExpenseDataService.swift
+│   │   │   │   └── Import/         # CSVUtilities · XLSXReader（自包含 zip+XML） · WeChatPayParser · CategoryGuesser · ExpenseExporter
 │   │   │   ├── ViewModels/         # LedgerViewModel · EntryViewModel（含 NSExpression 求值器）
 │   │   │   └── Views/              # RootView · LedgerView · EntrySheet · ExpenseDetailView · AmountKeypadView · …
 │   │   └── Settings/
-│   │       └── Views/              # SettingsView · ThemePickerView
+│   │       └── Views/              # SettingsView · ThemePickerView · ImportPreviewSheet（导入预览 + AI banner）
 │   └── Resources/
 │       ├── Info.plist
 │       └── Assets.xcassets/        # AppIcon（闭环 + 内方）
@@ -267,9 +275,15 @@ static let iCloudLink: String = "https://www.icloud.com/shortcuts/xxxxxxxxxx"
 - [x] 4 套主题（含暗色 ElevenLabs）
 - [x] 计算键盘 + NSExpression 表达式求值
 - [x] App icon · 「闭环 + 内方」/ 中国古钱币几何
+- [x] 数据导出（CSV）Data export — ZenCoin schema，文件名含账本名 + 日期
+- [x] 微信账单导入（xlsx / csv）WeChat statement import — 自包含 xlsx 解析、Excel 序列日期、平台代收识别
+- [x] AI 批量分类 + 备注清理 — `qwen-max-latest`，分批并行 30/批，进度条 banner
+- [x] Insight 当期账单弹窗（日 / 月）BillsSheet — 点日期/月份格直接看明细
+- [x] 日合计 Day-total — Ledger 列表每天右侧显示当日花费（中点分隔）
+- [ ] AA 旅行账本 Trip-split book — 多人共担、单付款人、按笔指定参与人、关账时一屏结算
 - [ ] iCloud 同步 CloudKit sync <!-- TODO: 评估 -->
 - [ ] 预算 Budget alerts
-- [ ] 数据导出（CSV / JSON）Data export
+- [ ] 支付宝账单导入 Alipay statement import
 - [ ] Apple Pay Wallet Transaction 自动记账（iOS 17+）
 - [ ] Control Center 自定义 Control（iOS 18+）
 - [ ] Share Extension（任意 app 长按图分享给 ZenCoin）

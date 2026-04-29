@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// 账本切换 sheet。列出所有账本（主账本顶 sticky），点击即切换并 dismiss。
-/// 底部一行「+ 新建账本」直接落到「设置 → 账本」管理页。
+/// 底部一行「+ 新建账本」直接弹出新建账本输入框，跟「设置 → 账本」里走的是同一条路径。
 struct BookSwitchSheet: View {
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
@@ -9,7 +9,10 @@ struct BookSwitchSheet: View {
     let books: [Book]
     let currentBookId: UUID
     let onPick: (UUID) -> Void
-    let onManage: () -> Void
+    /// 父层负责实际创建账本（拿到 BookStore），并切到新账本。
+    let onCreate: (String) -> Void
+
+    @State private var showingCreateBook = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -79,16 +82,12 @@ struct BookSwitchSheet: View {
             }
 
             Button {
-                dismiss()
-                // delay so the parent sheet finishes dismissing first
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    onManage()
-                }
+                showingCreateBook = true
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "plus")
                         .font(.system(size: 13, weight: .medium))
-                    Text("管理账本")
+                    Text("新建账本")
                         .font(theme.type.body)
                 }
                 .foregroundStyle(theme.textPrimary)
@@ -105,5 +104,15 @@ struct BookSwitchSheet: View {
         .background(theme.bgPrimary)
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.hidden)
+        .sheet(isPresented: $showingCreateBook) {
+            // dismissesOnCommit: false —— 由本层 BookSwitchSheet 的 dismiss() 一次性
+            // 把 editor + 自身一起收起，避免「先收 editor、再回到切换页、再收切换页」
+            // 那种两段式动画。
+            BookEditorSheet(title: "新建账本", initialName: "", dismissesOnCommit: false) { name in
+                onCreate(name)
+                dismiss()
+            }
+            .presentationBackground(theme.bgPrimary)
+        }
     }
 }

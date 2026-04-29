@@ -15,6 +15,10 @@ struct CalendarHeatmapView: View {
     }
 
     let mode: Mode
+    /// 月模式下点击日期格的回调（仅有效日期触发；空格忽略）。
+    var onPickDay: ((Date) -> Void)? = nil
+    /// 年模式下点击月份格的回调（参数为 1...12）。
+    var onPickMonth: ((Int) -> Void)? = nil
 
     var body: some View {
         switch mode {
@@ -43,7 +47,18 @@ struct CalendarHeatmapView: View {
             let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: 7)
             LazyVGrid(columns: columns, spacing: 4) {
                 ForEach(Array(days.enumerated()), id: \.offset) { _, date in
-                    monthCell(date: date, total: date.flatMap { totals[$0] } ?? 0, maxTotal: max)
+                    let cell = monthCell(date: date, total: date.flatMap { totals[$0] } ?? 0, maxTotal: max)
+                    if let date, let onPickDay {
+                        Button {
+                            UISelectionFeedbackGenerator().selectionChanged()
+                            onPickDay(date)
+                        } label: {
+                            cell
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        cell
+                    }
                 }
             }
         }
@@ -82,7 +97,18 @@ struct CalendarHeatmapView: View {
         let columns = Array(repeating: GridItem(.flexible(), spacing: 8), count: 3)
         return LazyVGrid(columns: columns, spacing: 8) {
             ForEach(1...12, id: \.self) { m in
-                yearCell(month: m, total: totals[m] ?? 0, maxTotal: max)
+                let cell = yearCell(month: m, total: totals[m] ?? 0, maxTotal: max)
+                if let onPickMonth {
+                    Button {
+                        UISelectionFeedbackGenerator().selectionChanged()
+                        onPickMonth(m)
+                    } label: {
+                        cell
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    cell
+                }
             }
         }
     }

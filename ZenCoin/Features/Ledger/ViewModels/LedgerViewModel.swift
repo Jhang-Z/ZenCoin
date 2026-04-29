@@ -101,6 +101,13 @@ final class LedgerViewModel {
         reload()
     }
 
+    /// 把选中的账单转移到目标账本。
+    func moveMany(ids: Set<UUID>, toBookId target: UUID) {
+        let toMove = entries.filter { ids.contains($0.id) }
+        try? service.move(toMove, toBookId: target)
+        reload()
+    }
+
     func selectionTotals(ids: Set<UUID>) -> (expense: Double, income: Double) {
         let selected = entries.filter { ids.contains($0.id) }
         let exp = selected.filter { !$0.isIncome }.reduce(0) { $0 + $1.amount }
