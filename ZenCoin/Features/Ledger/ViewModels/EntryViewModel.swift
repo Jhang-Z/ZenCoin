@@ -14,11 +14,25 @@ final class EntryViewModel {
     var paymentTime: Date = .now
     var bookId: UUID
 
+    /// 参与该笔的颜色 idx 集合。0 永远是「自己」，必含。
+    /// 1-7 是任意"另外的人"，靠固定颜色区分而无身份。
+    var participantColors: Set<Int> = [0]
+
     private let service: ExpenseDataService
 
     init(modelContext: ModelContext, bookId: UUID = Book.defaultID) {
         self.service = ExpenseDataService(modelContext: modelContext)
         self.bookId = bookId
+    }
+
+    /// 切换某个 color idx 的勾选；自己（idx 0）不允许移除。
+    func toggleParticipantColor(_ idx: Int) {
+        guard idx != 0 else { return }
+        if participantColors.contains(idx) {
+            participantColors.remove(idx)
+        } else {
+            participantColors.insert(idx)
+        }
     }
 
     // MARK: - Derived
@@ -130,13 +144,16 @@ final class EntryViewModel {
     @discardableResult
     func save() -> Bool {
         guard canSave else { return false }
+        // 收入笔不带参与人（不分摊）；支出笔默认至少含 self (idx 0)
+        let colors: [Int] = isIncome ? [0] : participantColors.sorted()
         let expense = Expense(
             amount: amount,
             isIncome: isIncome,
             category: category,
             note: note.trimmingCharacters(in: .whitespacesAndNewlines),
             paymentTime: paymentTime,
-            bookId: bookId
+            bookId: bookId,
+            participantColors: colors
         )
         do {
             try service.save(expense)

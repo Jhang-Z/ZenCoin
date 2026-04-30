@@ -5,6 +5,9 @@ struct SelectionSummaryBar: View {
     let count: Int
     let totalExpense: Double
     let totalIncome: Double
+    /// 已选笔的"我的份额"求和（按 amount/participantColors.count 加和）。
+    /// 仅当 ≥1 笔含 ≥2 人时显示这一行；否则与 totalExpense 相同（无需重复展示）。
+    let myShareExpense: Double
     /// 是否显示「移动」按钮（只有多账本场景才有意义）
     let canMove: Bool
     let onClear: () -> Void
@@ -87,20 +90,35 @@ struct SelectionSummaryBar: View {
                 .font(theme.type.headingNumeric)
                 .foregroundStyle(theme.textPrimary)
         } else {
-            HStack(spacing: 14) {
-                if totalExpense > 0 {
-                    Text("- " + CurrencyFormatter.format(totalExpense))
-                        .font(theme.type.headingNumeric)
-                        .monospacedDigit()
-                        .foregroundStyle(theme.textPrimary)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 14) {
+                    if totalExpense > 0 {
+                        Text("- " + CurrencyFormatter.format(totalExpense))
+                            .font(theme.type.headingNumeric)
+                            .monospacedDigit()
+                            .foregroundStyle(theme.textPrimary)
+                    }
+                    if totalIncome > 0 {
+                        Text("+ " + CurrencyFormatter.format(totalIncome))
+                            .font(theme.type.headingNumeric)
+                            .monospacedDigit()
+                            .foregroundStyle(theme.accent)
+                    }
                 }
-                if totalIncome > 0 {
-                    Text("+ " + CurrencyFormatter.format(totalIncome))
-                        .font(theme.type.headingNumeric)
+                // 仅当我的份额 != 总支出（即至少有一笔分摊了）才显示份额行，避免冗余
+                if showsShare {
+                    Text("我的份额 " + CurrencyFormatter.format(myShareExpense))
+                        .font(theme.type.micro)
+                        .tracking(0.4)
                         .monospacedDigit()
-                        .foregroundStyle(theme.accent)
+                        .foregroundStyle(theme.textSecondary)
                 }
             }
         }
+    }
+
+    private var showsShare: Bool {
+        totalExpense > 0
+            && abs(myShareExpense - totalExpense) > 0.005
     }
 }

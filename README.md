@@ -43,6 +43,8 @@
   *Deterministic keyword first; AI batch classify (chunked + parallel) for the long tail, plus note clean-up that recognizes platform-mediated merchants and strips order-id suffixes.*
 - 🍩 **统计圆盘 Donut insight** — 自绘环形分类图 + 外置标签 + 引线，旁边附月度/年度日历热图；点击日期/月份格弹出当期账单明细
   *Custom donut chart with side-stacked labels & leader lines; paired with month/year heatmap. Tap day/month cell to inspect that period's bills in a sheet.*
+- 👥 **参与人色位 Participant colors** — 每笔 expense 用 8 色固定调色板的色 idx 表达"几个人参与"（slot 0 = 你自己，1-7 匿名"另外的人"），行尾自动渲染圆点 strip；tap strip 一键勾选所有同组合的笔，底部 bar 同时展示总额 + 你的份额
+  *Color-slot–based participants on each expense (no person registry); tap row's dot strip to bulk-select same-combo bills, summary bar shows your share alongside total.*
 - 🎨 **四套主题 Four themes** — Claude（羊皮纸 · serif）/ Cursor（暖奶油）/ Zapier（米白）/ ElevenLabs（深色薄荷），每套 token 独立
   *Theme presets inspired by Anthropic / Cursor / Zapier / ElevenLabs design systems.*
 - 🧮 **简单计算键盘 Calculator keypad** — 自绘金额键盘支持 `+ − × ÷` 表达式，求值预览实时显示
@@ -228,7 +230,7 @@ ZenCoin/
 │   │   ├── Insight/
 │   │   │   └── Views/              # …包括 BillsSheet（点日期/月份格弹出当期账单 sheet）
 │   │   ├── Ledger/
-│   │   │   ├── Models/             # Expense @Model · ExpenseCategory（12 支出 + 4 收入）
+│   │   │   ├── Models/             # Expense @Model（含 participantColors）· ExpenseCategory · ParticipantPalette（8 色）
 │   │   │   ├── Services/
 │   │   │   │   ├── ExpenseDataService.swift
 │   │   │   │   └── Import/         # CSVUtilities · XLSXReader（自包含 zip+XML） · WeChatPayParser · CategoryGuesser · ExpenseExporter
@@ -280,7 +282,7 @@ static let iCloudLink: String = "https://www.icloud.com/shortcuts/xxxxxxxxxx"
 - [x] AI 批量分类 + 备注清理 — `qwen-max-latest`，分批并行 30/批，进度条 banner
 - [x] Insight 当期账单弹窗（日 / 月）BillsSheet — 点日期/月份格直接看明细
 - [x] 日合计 Day-total — Ledger 列表每天右侧显示当日花费（中点分隔）
-- [ ] AA 旅行账本 Trip-split book — 多人共担、单付款人、按笔指定参与人、关账时一屏结算
+- [x] 参与人色位 Participant colors — 8 色固定调色板，按色组合区分"几个人参与"，无需 Person 注册表；tap 行尾 strip 自动归桶，bar 算我的份额
 - [ ] iCloud 同步 CloudKit sync <!-- TODO: 评估 -->
 - [ ] 预算 Budget alerts
 - [ ] 支付宝账单导入 Alipay statement import

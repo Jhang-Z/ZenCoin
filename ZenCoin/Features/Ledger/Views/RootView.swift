@@ -82,14 +82,15 @@ struct RootView: View {
     }
 
     private var selectionBar: some View {
-        let totals: (expense: Double, income: Double) =
-            ledgerVM?.selectionTotals(ids: selection.ids) ?? (expense: 0, income: 0)
+        let totals: (expense: Double, income: Double, myShare: Double) =
+            ledgerVM?.selectionTotals(ids: selection.ids) ?? (expense: 0, income: 0, myShare: 0)
         // 至少要有 2 个账本（来源 + 至少 1 个目标）才显示「移动」
         let canMove = (bookStore?.books.count ?? 0) >= 2
         return SelectionSummaryBar(
             count: selection.ids.count,
             totalExpense: totals.expense,
             totalIncome: totals.income,
+            myShareExpense: totals.myShare,
             canMove: canMove,
             onClear: { selection.exit() },
             onMove: { showingMoveSheet = true },
