@@ -219,7 +219,8 @@ struct LedgerView: View {
                         EntryRowView(
                             entry: entry,
                             isSelectionMode: selection.isActive,
-                            isSelected: selection.ids.contains(entry.id)
+                            isSelected: selection.ids.contains(entry.id),
+                            onParticipantStripTap: { handleParticipantStripTap(entry, allEntries: vm.entries) }
                         )
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -297,5 +298,15 @@ struct LedgerView: View {
         } else {
             selection.toggle(entry.id)
         }
+    }
+
+    /// 点击 row 末尾的 dot strip → 进选择模式 + 自动勾选所有"参与人组合完全相同"的笔。
+    /// 例：[me, B] 那 3 笔会一起被选中；[me, B, C] 不会被勾上。
+    /// 已在选择模式时：把 scope 替换为新组（更"切换 scope"的语义）。
+    private func handleParticipantStripTap(_ entry: Expense, allEntries: [Expense]) {
+        let key = entry.participantColors.sorted()
+        let matching = allEntries.filter { $0.participantColors.sorted() == key }
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        selection.enter(withGroup: matching.map { $0.id })
     }
 }

@@ -21,6 +21,9 @@ struct ExpenseDetailView: View {
     @State private var confirmingDelete = false
     @FocusState private var noteFocused: Bool
 
+    /// 参与该笔的颜色 idx 集合（含 self idx 0）。
+    @State private var editParticipantColors: Set<Int> = [0]
+
     private var service: ExpenseDataService { ExpenseDataService(modelContext: modelContext) }
 
     var body: some View {
@@ -33,6 +36,12 @@ struct ExpenseDetailView: View {
 
                 infoCard
                     .padding(.horizontal, 24)
+
+                if !editIsIncome {
+                    participantsCard
+                        .padding(.horizontal, 24)
+                        .padding(.top, 16)
+                }
 
                 noteCard
                     .padding(.horizontal, 24)
@@ -260,6 +269,8 @@ struct ExpenseDetailView: View {
         editPaymentTime = found.paymentTime
         editCategory = found.category
         editIsIncome = found.isIncome
+        // 旧数据可能没有 participantColors → 兜底成 [0]
+        editParticipantColors = found.participantColors.isEmpty ? [0] : Set(found.participantColors)
     }
 
     private func formatAmountForEditing(_ amt: Double) -> String {
@@ -273,6 +284,15 @@ struct ExpenseDetailView: View {
         expense.note = editNote.trimmingCharacters(in: .whitespacesAndNewlines)
         expense.paymentTime = editPaymentTime
         expense.categoryRaw = editCategory.rawValue
+        // 仅支出写参与人；收入恒为 [0]
+        if editIsIncome {
+            expense.participantColors = [0]
+        } else {
+            // self (idx 0) 始终在内
+            var s = editParticipantColors
+            s.insert(0)
+            expense.participantColors = s.sorted()
+        }
         try? service.update(expense)
     }
 
@@ -280,6 +300,74 @@ struct ExpenseDetailView: View {
         guard let expense else { return }
         try? service.delete(expense)
         dismiss()
+    }
+
+    // MARK: - Participants card (color-slot picker)
+
+    private var participantsCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("PARTICIPANTS / 参与人")
+                    .font(theme.type.micro)
+                    .tracking(0.8)
+                    .foregroundStyle(theme.textSecondary)
+                Spacer()
+                Text(participantsMeta)
+                    .font(theme.type.micro)
+                    .tracking(0.4)
+                    .monospacedDigit()
+                    .foregroundStyle(theme.textSecondary)
+            }
+            HStack(spacing: ParticipantPalette.chipSpacing) {
+                ForEach(0..<ParticipantPalette.count, id: \.self) { idx in
+                    chip(idx: idx)
+                }
+                Spacer(minLength: 0)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .background(
+            RoundedRectangle(cornerRadius: theme.radiusMedium).fill(theme.bgSurface)
+        )
+    }
+
+    @ViewBuilder
+    private func chip(idx: Int) -> some View {
+        let on = editParticipantColors.contains(idx)
+        let isSelf = idx == 0
+        Button {
+            UISelectionFeedbackGenerator().selectionChanged()
+            if isSelf { return }
+            if on {
+                editParticipantColors.remove(idx)
+            } else {
+                editParticipantColors.insert(idx)
+            }
+            commit()
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(on ? ParticipantPalette.color(for: idx)
+                             : ParticipantPalette.color(for: idx).opacity(0.18))
+                    .frame(width: ParticipantPalette.chipSize, height: ParticipantPalette.chipSize)
+                if isSelf {
+                    Circle()
+                        .fill(theme.bgPrimary)
+                        .frame(width: 6, height: 6)
+                }
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(isSelf)
+    }
+
+    private var participantsMeta: String {
+        let n = editParticipantColors.count
+        let amt = Double(editAmount) ?? 0
+        guard n > 1, amt > 0 else { return "" }
+        let perHead = amt / Double(n)
+        return "\(n) 人均摊 · \(CurrencyFormatter.format(perHead))/人"
     }
 }
 

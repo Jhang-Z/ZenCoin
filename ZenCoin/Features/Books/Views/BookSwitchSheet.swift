@@ -106,8 +106,7 @@ struct BookSwitchSheet: View {
         .presentationDragIndicator(.hidden)
         .sheet(isPresented: $showingCreateBook) {
             // dismissesOnCommit: false —— 由本层 BookSwitchSheet 的 dismiss() 一次性
-            // 把 editor + 自身一起收起，避免「先收 editor、再回到切换页、再收切换页」
-            // 那种两段式动画。
+            // 把 editor + 自身一起收起，避免两段式动画。
             BookEditorSheet(title: "新建账本", initialName: "", dismissesOnCommit: false) { name in
                 onCreate(name)
                 dismiss()

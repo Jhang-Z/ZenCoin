@@ -33,7 +33,13 @@ struct EntrySheet: View {
             noteField
                 .padding(.horizontal, 24)
                 .padding(.top, 14)
-                .padding(.bottom, 14)
+                .padding(.bottom, (viewModel?.isIncome == false) ? 8 : 14)
+
+            if let vm = viewModel, !vm.isIncome {
+                participantsRow(vm: vm)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 14)
+            }
 
             AmountKeypadView(
                 onToken: { viewModel?.appendToken($0) },
@@ -148,5 +154,67 @@ struct EntrySheet: View {
         guard viewModel?.save() == true else { return }
         UISelectionFeedbackGenerator().selectionChanged()
         dismiss()
+    }
+
+    // MARK: - Participants chip row
+
+    @ViewBuilder
+    private func participantsRow(vm: EntryViewModel) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("PARTICIPANTS / 参与人")
+                    .font(theme.type.micro)
+                    .tracking(0.6)
+                    .foregroundStyle(theme.textSecondary)
+                Spacer()
+                Text(participantsMeta(vm: vm))
+                    .font(theme.type.micro)
+                    .tracking(0.4)
+                    .monospacedDigit()
+                    .foregroundStyle(theme.textSecondary)
+            }
+            HStack(spacing: ParticipantPalette.chipSpacing) {
+                ForEach(0..<ParticipantPalette.count, id: \.self) { idx in
+                    chip(idx: idx, vm: vm)
+                }
+                Spacer(minLength: 0)
+            }
+        }
+    }
+
+    /// 单个色位 chip。
+    /// - 已选：实心填充对应色，alpha 100%
+    /// - 未选：仅描边（用 separator）+ alpha 30% 填充提示「可点击」
+    /// - idx 0 self：始终选中、不可取消（轻点反馈但状态不变）
+    @ViewBuilder
+    private func chip(idx: Int, vm: EntryViewModel) -> some View {
+        let on = vm.participantColors.contains(idx)
+        let isSelf = idx == 0
+        Button {
+            UISelectionFeedbackGenerator().selectionChanged()
+            vm.toggleParticipantColor(idx)
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(on ? ParticipantPalette.color(for: idx)
+                             : ParticipantPalette.color(for: idx).opacity(0.18))
+                    .frame(width: ParticipantPalette.chipSize, height: ParticipantPalette.chipSize)
+                if isSelf {
+                    // self chip 中央嵌一个小白点，提示「这是我」
+                    Circle()
+                        .fill(theme.bgPrimary)
+                        .frame(width: 6, height: 6)
+                }
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(isSelf)
+    }
+
+    private func participantsMeta(vm: EntryViewModel) -> String {
+        let n = vm.participantColors.count
+        guard n > 1, vm.amount > 0 else { return "" }
+        let perHead = vm.amount / Double(n)
+        return "\(n) 人均摊 · \(CurrencyFormatter.format(perHead))/人"
     }
 }

@@ -14,6 +14,10 @@ final class Expense {
     var bookId: UUID = Book.defaultID
     /// 外部数据源唯一 id（如微信/支付宝交易单号），用于导入幂等；手动录入留空。
     var externalId: String?
+    /// 参与该笔的颜色 idx 列表（升序、去重）。
+    /// idx 0 = 你自己；1-7 = 7 个匿名"另外的人"，跨账单同色 = 同一个人（用户自行心智映射）。
+    /// 旧数据 / 导入 / 仅自己 → `[0]`。仅 1 个元素时行不显示 dot strip。
+    var participantColors: [Int] = [0]
 
     var category: ExpenseCategory {
         get { ExpenseCategory(rawValue: categoryRaw) ?? .other }
@@ -27,7 +31,8 @@ final class Expense {
         note: String = "",
         paymentTime: Date = Date(),
         bookId: UUID = Book.defaultID,
-        externalId: String? = nil
+        externalId: String? = nil,
+        participantColors: [Int] = [0]
     ) {
         self.id = UUID()
         self.amount = amount
@@ -38,5 +43,6 @@ final class Expense {
         self.createdAt = Date()
         self.bookId = bookId
         self.externalId = externalId
+        self.participantColors = participantColors
     }
 }

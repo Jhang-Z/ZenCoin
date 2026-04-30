@@ -108,10 +108,15 @@ final class LedgerViewModel {
         reload()
     }
 
-    func selectionTotals(ids: Set<UUID>) -> (expense: Double, income: Double) {
+    func selectionTotals(ids: Set<UUID>) -> (expense: Double, income: Double, myShare: Double) {
         let selected = entries.filter { ids.contains($0.id) }
         let exp = selected.filter { !$0.isIncome }.reduce(0) { $0 + $1.amount }
         let inc = selected.filter { $0.isIncome }.reduce(0) { $0 + $1.amount }
-        return (exp, inc)
+        // 我的份额：每笔 amount / 参与人数 求和。空 / [0] 视作仅自己（=amount）。
+        let share = selected.filter { !$0.isIncome }.reduce(0.0) { acc, e in
+            let n = max(1, e.participantColors.count)
+            return acc + e.amount / Double(n)
+        }
+        return (exp, inc, share)
     }
 }
