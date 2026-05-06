@@ -8,7 +8,6 @@ struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.bookStore) private var bookStore
 
-    @State private var currency: CurrencySymbol = CurrencyFormatter.symbol
     @State private var confirmingErase = false
     @State private var aiKeyService = BailianKeyService.shared
     @State private var aiKeyDraft: String = ""
@@ -16,7 +15,10 @@ struct SettingsView: View {
     @FocusState private var aiKeyFieldFocused: Bool
 
     // Import / Export state
+    // 只挂一个 .fileImporter，避免 SwiftUI 多个 modifier 互相覆盖的 bug
+    private enum ImportSource { case wechat, alipay }
     @State private var showingImporter = false
+    @State private var pendingImportSource: ImportSource = .wechat
     @State private var importPreview: WeChatPayParser.Result?
     @State private var importError: String?
     @State private var exportFile: ExportPayload?
@@ -76,28 +78,7 @@ struct SettingsView: View {
                     }
                 }
 
-                section(title: "CURRENCY / 货币") {
-                    HStack(spacing: 8) {
-                        ForEach(CurrencySymbol.allCases) { sym in
-                            Button {
-                                currency = sym
-                                CurrencyFormatter.symbol = sym
-                            } label: {
-                                Text(sym.rawValue)
-                                    .font(.system(size: 18, weight: .medium, design: theme.fontDesign))
-                                    .foregroundStyle(currency == sym ? theme.bgPrimary : theme.textPrimary)
-                                    .frame(maxWidth: .infinity, minHeight: 44)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: theme.radiusSmall)
-                                            .fill(currency == sym ? theme.accent : theme.bgSurface)
-                                    )
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-
-                section(title: "AI / 智能记账") {
+section(title: "AI / 智能记账") {
                     Button {
                         aiKeyDraft = aiKeyService.apiKey() ?? ""
                         showingAIKeyEditor = true
@@ -148,11 +129,34 @@ struct SettingsView: View {
 
                 section(title: "DATA / 数据") {
                     Button {
+                        pendingImportSource = .wechat
                         showingImporter = true
                     } label: {
                         rowChrome {
                             HStack {
                                 Text("导入微信账单")
+                                    .font(theme.type.body)
+                                    .foregroundStyle(theme.textPrimary)
+                                Spacer()
+                                Text("CSV")
+                                    .font(theme.type.caption)
+                                    .tracking(0.6)
+                                    .foregroundStyle(theme.textSecondary)
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundStyle(theme.textSecondary)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+
+                    Button {
+                        pendingImportSource = .alipay
+                        showingImporter = true
+                    } label: {
+                        rowChrome {
+                            HStack {
+                                Text("导入支付宝账单")
                                     .font(theme.type.body)
                                     .foregroundStyle(theme.textPrimary)
                                 Spacer()
@@ -247,7 +251,10 @@ struct SettingsView: View {
             ],
             allowsMultipleSelection: false
         ) { result in
-            handleImporterResult(result)
+            switch pendingImportSource {
+            case .wechat: handleImporterResult(result)
+            case .alipay: handleAlipayImporterResult(result)
+            }
         }
         .sheet(item: $importPreview) { preview in
             ImportPreviewSheet(parseResult: preview)
@@ -284,6 +291,31 @@ struct SettingsView: View {
                 let parsed = try WeChatPayParser.parse(data)
                 if parsed.drafts.isEmpty {
                     importError = "文件没有可导入的记录"
+                } else {
+                    importPreview = parsed
+                }
+            } catch {
+                importError = error.localizedDescription
+            }
+        }
+    }
+
+    private func handleAlipayImporterResult(_ result: Result<[URL], Error>) {
+        switch result {
+        case .failure(let err):
+            importError = err.localizedDescription
+        case .success(let urls):
+            guard let url = urls.first else { return }
+            let scoped = url.startAccessingSecurityScopedResource()
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let data = try Data(contentsOf: url)
+                let parsed = try AliPayParser.parse(data)
+                if parsed.drafts.isEmpty {
+                    let neutral  = parsed.skipped.filter { $0.reason == .nonAccounting }.count
+                    let refunded = parsed.skipped.filter { $0.reason == .refunded }.count
+                    let malformed = parsed.skipped.filter { $0.reason == .malformed }.count
+                    importError = "没有可导入的记录（不计收支\(neutral)笔 · 交易关闭/失败\(refunded)笔 · 格式异常\(malformed)笔）"
                 } else {
                     importPreview = parsed
                 }

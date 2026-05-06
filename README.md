@@ -35,10 +35,10 @@
 
 - 📓 **多账本 Multi-book** — 主账本 + 自定义场景账本（旅行 / 装修 / …），切换 1-tap，独立汇总
   *Default book + scenario books (Travel / Renovation / …); switch in one tap, isolated stats.*
-- 🤖 **AI 截图记账 AI shortcut entry** — 通过 iOS Shortcuts + 阿里云百炼 `qwen-vl-max-latest` 识别支付截图，背面双击 → 后台静默写入
-  *AppIntent + Bailian Vision parses payment screenshots. Bind to Back-Tap, runs silently in background.*
-- 📥 **账单导入 / 导出 Bill import & export** — 微信支付账单（xlsx / csv）一键导入；同名 CSV schema 导出当前账本，可备份 round-trip
-  *WeChat Pay statement (xlsx + csv) one-tap import; export current book to ZenCoin-schema CSV for round-trip backup.*
+- 🤖 **AI 截图记账 AI shortcut entry** — 通过 iOS Shortcuts + 阿里云百炼 `qwen-vl-max-latest` 识别支付截图，背面双击 → 后台静默写入；图片哈希 + 支付时间内容去重，防止重复截图多记
+  *AppIntent + Bailian Vision parses payment screenshots. Bind to Back-Tap, runs silently in background. Dual dedup: image hash + amount/time content check prevent double-recording.*
+- 📥 **账单导入 / 导出 Bill import & export** — 微信支付 & 支付宝账单（xlsx / csv）一键导入；同名 CSV schema 导出当前账本，可备份 round-trip
+  *WeChat Pay (xlsx + csv) & Alipay (csv) statement one-tap import; export current book to ZenCoin-schema CSV for round-trip backup.*
 - 🧠 **AI 批量分类 + 备注清理 AI batch classify & note polish** — 关键词字典 deterministic 命中 → AI（`qwen-max-latest`）兜底未命中行：批量并行 + 进度条 banner，识别真实商家、剥订单尾巴
   *Deterministic keyword first; AI batch classify (chunked + parallel) for the long tail, plus note clean-up that recognizes platform-mediated merchants and strips order-id suffixes.*
 - 🍩 **统计圆盘 Donut insight** — 自绘环形分类图 + 外置标签 + 引线，旁边附月度/年度日历热图；点击日期/月份格弹出当期账单明细
@@ -231,7 +231,7 @@ ZenCoin/
 │   │   │   ├── Models/             # Expense @Model（含 participantColors）· ExpenseCategory · ParticipantPalette（8 色）
 │   │   │   ├── Services/
 │   │   │   │   ├── ExpenseDataService.swift
-│   │   │   │   └── Import/         # CSVUtilities · XLSXReader（自包含 zip+XML） · WeChatPayParser · CategoryGuesser · ExpenseExporter
+│   │   │   │   └── Import/         # CSVUtilities · XLSXReader（自包含 zip+XML） · WeChatPayParser · AliPayParser · CategoryGuesser · ExpenseExporter
 │   │   │   ├── ViewModels/         # LedgerViewModel · EntryViewModel（含 NSExpression 求值器）
 │   │   │   └── Views/              # RootView · LedgerView · EntrySheet · ExpenseDetailView · AmountKeypadView · …
 │   │   └── Settings/
@@ -281,9 +281,10 @@ static let iCloudLink: String = "https://www.icloud.com/shortcuts/xxxxxxxxxx"
 - [x] Insight 当期账单弹窗（日 / 月）BillsSheet — 点日期/月份格直接看明细
 - [x] 日合计 Day-total — Ledger 列表每天右侧显示当日花费（中点分隔）
 - [x] 参与人色位 Participant colors — 8 色固定调色板，按色组合区分"几个人参与"，无需 Person 注册表；tap 行尾 strip 自动归桶，bar 算我的份额
+- [x] 支付宝账单导入 Alipay statement import — GB18030 解码 + 精确列名匹配（避免 iOS locale 误匹配）
+- [x] AI 截图去重 Screenshot dedup — 图片哈希（10 min 窗口）+ 金额/支付时间内容去重（同分钟）双重防护
 - [ ] iCloud 同步 CloudKit sync <!-- TODO: 评估 -->
 - [ ] 预算 Budget alerts
-- [ ] 支付宝账单导入 Alipay statement import
 - [ ] Apple Pay Wallet Transaction 自动记账（iOS 17+）
 - [ ] Control Center 自定义 Control（iOS 18+）
 - [ ] Share Extension（任意 app 长按图分享给 ZenCoin）

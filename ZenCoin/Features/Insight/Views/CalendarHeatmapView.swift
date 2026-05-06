@@ -136,8 +136,9 @@ struct CalendarHeatmapView: View {
     // MARK: - Format
 
     private func shortAmount(_ v: Double) -> String {
-        if v >= 10000 { return String(format: "%.1fw", v / 10000) }
-        if v >= 1000  { return String(format: "%.1fk", v / 1000) }
-        return String(Int(v.rounded()))
+        let sym = CurrencyFormatter.symbol.rawValue
+        if v >= 10000 { return "\(sym)\(String(format: "%.1fw", v / 10000))" }
+        if v >= 1000  { return "\(sym)\(String(format: "%.1fk", v / 1000))" }
+        return "\(sym)\(Int(v.rounded()))"
     }
 }

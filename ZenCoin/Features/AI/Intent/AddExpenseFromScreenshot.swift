@@ -1,4 +1,5 @@
 import AppIntents
+import CryptoKit
 import SwiftData
 import UIKit
 
@@ -32,6 +33,10 @@ struct AddExpenseFromScreenshot: AppIntent {
             return .result(dialog: "无法读取截图")
         }
 
+        if isDuplicateScreenshot(imageData) {
+            return .result(dialog: "已跳过：与上次截图相同")
+        }
+
         let drafts: [AIExpenseDraft]
         do {
             drafts = try await ExpenseAIService.shared.recognize(image: image)
@@ -56,16 +61,29 @@ struct AddExpenseFromScreenshot: AppIntent {
             return Book.defaultID
         }()
 
+        var inserted: [AIExpenseDraft] = []
+        var skipped = 0
         for draft in drafts {
+            let paymentTime = draft.paymentTime ?? Date()
+            if isDuplicateExpense(amount: draft.amount, paymentTime: paymentTime,
+                                  bookId: currentBookId, context: context) {
+                skipped += 1
+                continue
+            }
             let expense = Expense(
                 amount: draft.amount,
                 isIncome: draft.isIncome,
                 category: draft.category,
                 note: draft.note,
-                paymentTime: draft.paymentTime ?? Date(),
+                paymentTime: paymentTime,
                 bookId: currentBookId
             )
             context.insert(expense)
+            inserted.append(draft)
+        }
+
+        guard !inserted.isEmpty else {
+            return .result(dialog: "已跳过：账单已记录过")
         }
         try context.save()
 
@@ -73,13 +91,51 @@ struct AddExpenseFromScreenshot: AppIntent {
         NotificationCenter.default.post(name: .expenseStoreDidChange, object: nil)
 
         let summary: String
-        if drafts.count == 1 {
-            let d = drafts[0]
+        if inserted.count == 1 {
+            let d = inserted[0]
             let prefix = d.isIncome ? "+" : "-"
-            summary = "\(d.category.displayName) \(prefix)\(CurrencyFormatter.format(d.amount))"
+            let skipNote = skipped > 0 ? "（跳过重复 \(skipped) 笔）" : ""
+            summary = "\(d.category.displayName) \(prefix)\(CurrencyFormatter.format(d.amount))\(skipNote)"
         } else {
-            summary = "已记 \(drafts.count) 笔"
+            let skipNote = skipped > 0 ? "，跳过重复 \(skipped) 笔" : ""
+            summary = "已记 \(inserted.count) 笔\(skipNote)"
         }
         return .result(dialog: "记账成功 · \(summary)")
+    }
+
+    // MARK: - Duplicate detection
+
+    /// 同账本内金额相同且支付时间在同一分钟内的记录视为重复。
+    private func isDuplicateExpense(amount: Double, paymentTime: Date,
+                                    bookId: UUID, context: ModelContext) -> Bool {
+        guard let minuteStart = Calendar.current.date(bySetting: .second, value: 0,
+                                                      of: paymentTime) else { return false }
+        let minuteEnd = minuteStart.addingTimeInterval(60)
+        var descriptor = FetchDescriptor<Expense>(
+            predicate: #Predicate<Expense> { e in
+                e.amount == amount
+                    && e.bookId == bookId
+                    && e.paymentTime >= minuteStart
+                    && e.paymentTime < minuteEnd
+            }
+        )
+        descriptor.fetchLimit = 1
+        return (try? context.fetch(descriptor))?.isEmpty == false
+    }
+
+    /// 10 分钟内相同截图视为重复，返回 true 则跳过本次记账。
+    private func isDuplicateScreenshot(_ data: Data) -> Bool {
+        let hash = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+        let defaults = UserDefaults.standard
+        let lastHash = defaults.string(forKey: "lastScreenshotHash")
+        let lastTime = defaults.double(forKey: "lastScreenshotTime")
+        let now = Date().timeIntervalSince1970
+        let isDuplicate = hash == lastHash && now - lastTime < 600
+        // 无论是否重复都更新，保证下一张新截图能正常记录
+        if !isDuplicate {
+            defaults.set(hash, forKey: "lastScreenshotHash")
+            defaults.set(now, forKey: "lastScreenshotTime")
+        }
+        return isDuplicate
     }
 }

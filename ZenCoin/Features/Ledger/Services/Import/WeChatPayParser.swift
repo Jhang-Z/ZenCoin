@@ -13,18 +13,11 @@ struct WeChatPayParser {
     struct Result: Identifiable {
         let id = UUID()
         var drafts: [ImportDraft]
-        var skipped: [Skipped]
+        var skipped: [BillSkipped]
+        var source: ImportDraft.Source
     }
 
-    struct Skipped {
-        enum Reason: String {
-            case nonAccounting    // 不计收支
-            case refunded          // 已退款 / 已撤销
-            case malformed         // 字段缺失 / 解析失败
-        }
-        let reason: Reason
-        let rawRow: [String]
-    }
+    typealias Skipped = BillSkipped
 
     static func parse(_ data: Data) throws -> Result {
         let allRows: [[String]]
@@ -104,7 +97,7 @@ struct WeChatPayParser {
             ))
         }
 
-        return Result(drafts: drafts, skipped: skipped)
+        return Result(drafts: drafts, skipped: skipped, source: .wechat)
     }
 
     // MARK: - Helpers
@@ -260,9 +253,20 @@ struct ImportDraft: Identifiable {
     enum Source: String { case wechat, alipay, generic }
 }
 
+struct BillSkipped {
+    enum Reason: String {
+        case nonAccounting    // 不计收支
+        case refunded          // 已退款 / 已撤销
+        case malformed         // 字段缺失 / 解析失败
+    }
+    let reason: Reason
+    let rawRow: [String]
+}
+
 enum ImportError: LocalizedError {
     case invalidEncoding
     case notWeChatPay
+    case notAlipay
     case headerNotFound
     case empty
 
@@ -270,6 +274,7 @@ enum ImportError: LocalizedError {
         switch self {
         case .invalidEncoding: return "无法识别文件编码"
         case .notWeChatPay:    return "不是微信支付账单"
+        case .notAlipay:       return "不是支付宝账单"
         case .headerNotFound:  return "找不到表头"
         case .empty:           return "文件没有可导入的记录"
         }

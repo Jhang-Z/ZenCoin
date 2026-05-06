@@ -71,7 +71,7 @@ struct ImportPreviewSheet: View {
                 .font(theme.type.micro)
                 .tracking(0.8)
                 .foregroundStyle(theme.textSecondary)
-            Text("微信支付账单")
+            Text(parseResult.source == .alipay ? "支付宝账单" : "微信支付账单")
                 .font(theme.type.title)
                 .foregroundStyle(theme.textPrimary)
                 .tracking(theme.displayTracking * 0.4)
