@@ -38,9 +38,12 @@ final class ExpenseAIService {
     private let keyService = BailianKeyService.shared
 
     private let endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
-    private let model = "qwen-vl-max-latest"
+    // 注意：用稳定版别名，不要用 `-latest` / 带日期快照版。
+    // 实测部分百炼账号 tier 对 `qwen-*-latest` / 日期快照版返回 access_denied，
+    // 但稳定版（qwen-vl-max / qwen-max）可用。
+    private let model = "qwen-vl-max"
     /// 纯文本批量分类用：比 vl-max 快 5×、便宜 ~10×。
-    private let textModel = "qwen-max-latest"
+    private let textModel = "qwen-max"
 
     private var systemPrompt: String {
         let now = Date()

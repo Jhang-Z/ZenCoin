@@ -12,6 +12,7 @@ struct SettingsView: View {
     @State private var aiKeyService = BailianKeyService.shared
     @State private var aiKeyDraft: String = ""
     @State private var showingAIKeyEditor = false
+    @State private var aiKeyRevealed: Bool = false
     @FocusState private var aiKeyFieldFocused: Bool
 
     // Import / Export state
@@ -81,6 +82,7 @@ struct SettingsView: View {
 section(title: "AI / 智能记账") {
                     Button {
                         aiKeyDraft = aiKeyService.apiKey() ?? ""
+                        aiKeyRevealed = false   // 每次打开都默认遮住
                         showingAIKeyEditor = true
                     } label: {
                         rowChrome {
@@ -417,20 +419,42 @@ section(title: "AI / 智能记账") {
                 }
             }
 
-            SecureField("sk-…", text: $aiKeyDraft)
-                .font(theme.type.body)
+            HStack(spacing: 8) {
+                // SecureField 和 TextField 在 SwiftUI 里是两个不同的 view —— 切换会重建，
+                // 顺便清空 focus 状态。把 ZStack 包一层让外观一致；focus 控制保持在外。
+                Group {
+                    if aiKeyRevealed {
+                        TextField("sk-…", text: $aiKeyDraft)
+                    } else {
+                        SecureField("sk-…", text: $aiKeyDraft)
+                    }
+                }
+                .font(theme.type.body.monospaced())
                 .foregroundStyle(theme.textPrimary)
                 .focused($aiKeyFieldFocused)
                 .submitLabel(.done)
                 .onSubmit { aiKeyFieldFocused = false }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: theme.radiusSmall)
-                        .fill(theme.bgSurface)
-                )
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
+
+                Button {
+                    aiKeyRevealed.toggle()
+                } label: {
+                    Image(systemName: aiKeyRevealed ? "eye.slash" : "eye")
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundStyle(theme.textSecondary)
+                        .frame(width: 32, height: 32)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(aiKeyRevealed ? "隐藏 key" : "显示 key")
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: theme.radiusSmall)
+                    .fill(theme.bgSurface)
+            )
 
             HStack(spacing: 10) {
                 if aiKeyService.hasAPIKey {
